@@ -3,8 +3,10 @@ import os
 import tempfile
 import subprocess
 import io
+import json
+import hashlib
 
-from telegram import Update
+from telegram import Update, Document, Video, PhotoSize
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -14,50 +16,62 @@ from telegram.ext import (
 )
 
 from pymediainfo import MediaInfo
-from PIL import Image, ImageEnhance, PngImagePlugin
 import piexif
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-if not BOT_TOKEN:
-    raise ValueError("BOT_TOKEN environment variable not set")
+BOT_TOKEN = "7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw"
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO 
+    level=logging.INFO,
+    handlers=[
+        logging.FileHandler("bot.log"),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
+
+PROCESSED_FILE_IDS_PATH = "processed_files.json"
+
+if os.path.exists(PROCESSED_FILE_IDS_PATH):
+    with open(PROCESSED_FILE_IDS_PATH, "r") as f:
+        PROCESSED_FILE_IDS = set(json.load(f))
+else:
+    PROCESSED_FILE_IDS = set()
+
+def save_processed_file_ids():
+    with open(PROCESSED_FILE_IDS_PATH, "w") as f:
+        json.dump(list(PROCESSED_FILE_IDS), f)
 
 USER_STATE = {}
 
 PARAMETERS = {
     "brightness": {
         "base": 1.0,
-        "increment": 0.05,
+        "increment": 0.03,
+        "max": 1.5,
+        "min": 0.5
+    },
+    "sharpen": {
+        "base": 1.0,
+        "increment": 0.03,
+        "max": 1.5,
+        "min": 0.5
+    },
+    "temp": {
+        "base": 1.0,
+        "increment": 0.03,
         "max": 1.5,
         "min": 0.5
     },
     "contrast": {
         "base": 1.0,
-        "increment": 0.05,
+        "increment": 0.03,
         "max": 1.5,
         "min": 0.5
     },
-    "saturation": {
+    "gamma": {
         "base": 1.0,
-        "increment": 0.05,
-        "max": 1.5,
-        "min": 0.5
-    },
-    "sharpness": {
-        "base": 1.0,
-        "increment": 0.05,
-        "max": 1.5,
-        "min": 0.5
-    },
-    "color_balance": {
-        "base": 1.0,
-        "increment": 0.05,
+        "increment": 0.03,
         "max": 1.5,
         "min": 0.5
     }
@@ -90,8 +104,8 @@ def get_metadata(file_path, file_type):
                 logger.warning(f"No EXIF data found for {file_path}.")
         elif ext == ".png":
             try:
-                image = Image.open(file_path)
-                info = image.info
+                with open(file_path, "rb") as f:
+                    info = piexif.load(f.read())
                 if 'Title' in info:
                     metadata_dict["title"] = info['Title']
                 if 'Description' in info:
@@ -101,126 +115,78 @@ def get_metadata(file_path, file_type):
     return metadata_dict
 
 def compare_metadata(original_meta, updated_meta):
-    fields = ["title", "comment"]
+    fields = list(PARAMETERS.keys()) + ["title", "comment"]
     lines = []
-    for field in fields:
+    original_params = {}
+    updated_params = {}
+    
+    for field in PARAMETERS.keys():
+        original_params[field] = "N/A"
+        updated_params[field] = "N/A"
+    
+    if "comment" in original_meta:
+        try:
+            parts = original_meta["comment"].split(", ")
+            for part in parts:
+                key, value = part.split("=")
+                if key.lower() in PARAMETERS:
+                    original_params[key.lower()] = value
+        except:
+            pass
+    
+    if "comment" in updated_meta:
+        try:
+            parts = updated_meta["comment"].split(", ")
+            for part in parts:
+                key, value = part.split("=")
+                if key.lower() in PARAMETERS:
+                    updated_params[key.lower()] = value
+        except:
+            pass
+    
+    for field in PARAMETERS.keys():
+        orig_val = original_params.get(field, "N/A")
+        new_val = updated_params.get(field, "N/A")
+        if orig_val != new_val:
+            lines.append(f"{field.capitalize()} изменено:\n    {orig_val} → {new_val}")
+        else:
+            lines.append(f"{field.capitalize()} не изменено: {orig_val}")
+    
+    for field in ["title", "comment"]:
         orig_val = original_meta.get(field, "N/A")
         new_val = updated_meta.get(field, "N/A")
         if orig_val != new_val:
             lines.append(f"{field.capitalize()} изменено:\n    {orig_val} → {new_val}")
         else:
             lines.append(f"{field.capitalize()} не изменено: {orig_val}")
+    
     return "\n".join(lines)
 
-def process_video(input_path, output_path, filter_string, metadata_dict):
-    cmd = ["ffmpeg", "-y", "-i", input_path]
-    if filter_string:
-        cmd.extend(["-vf", filter_string, "-c:v", "libx264", "-crf", "18"])
-    else:
-        cmd.extend(["-c:v", "copy"])
-    cmd.extend(["-c:a", "copy"])
-    for k, v in metadata_dict.items():
-        cmd.extend(["-metadata", f"{k}={v}"])
-    cmd.append(output_path)
-    logger.debug(f"Running ffmpeg command: {' '.join(cmd)}")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode == 0:
-        logger.info(f"Video processed successfully: {output_path}")
-        logger.debug(f"FFmpeg STDERR: {result.stderr}")
-        return result.stdout, result.stderr
-    else:
-        logger.error("FFmpeg failed!")
-        logger.error(f"stdout: {result.stdout}")
-        logger.error(f"stderr: {result.stderr}")
-        raise subprocess.CalledProcessError(
-            returncode=result.returncode,
-            cmd=cmd,
-            output=result.stdout,
-            stderr=result.stderr
-        )
+def get_file_hash(file_path):
+    sha256 = hashlib.sha256()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            sha256.update(chunk)
+    return sha256.hexdigest()
 
-def process_photo(input_path, output_path, params, metadata_dict):
+def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
+    cmd = ["ffmpeg", "-y", "-i", input_path, "-c", "copy"]
+    for key, value in metadata_dict.items():
+        cmd.extend(["-metadata", f"{key}={value}"])
+    cmd.append(output_path)
+    logger.info(f"Running ffmpeg command: {' '.join(cmd)}")
     try:
-        image = Image.open(input_path)
-        log_details = {}
-        
-        brightness = params.get("brightness", 1.0)
-        enhancer = ImageEnhance.Brightness(image)
-        image = enhancer.enhance(brightness)
-        log_details["Brightness"] = brightness
-        
-        contrast = params.get("contrast", 1.0)
-        enhancer = ImageEnhance.Contrast(image)
-        image = enhancer.enhance(contrast)
-        log_details["Contrast"] = contrast
-        
-        saturation = params.get("saturation", 1.0)
-        enhancer = ImageEnhance.Color(image)
-        image = enhancer.enhance(saturation)
-        log_details["Saturation"] = saturation
-        
-        sharpness = params.get("sharpness", 1.0)
-        enhancer = ImageEnhance.Sharpness(image)
-        image = enhancer.enhance(sharpness)
-        log_details["Sharpness"] = sharpness
-        
-        color_balance = params.get("color_balance", 1.0)
-        if color_balance != 1.0:
-            r, g, b = image.split()
-            r = r.point(lambda i: i * color_balance)
-            g = g.point(lambda i: i * color_balance)
-            b = b.point(lambda i: i * color_balance)
-            image = Image.merge('RGB', (r, g, b))
-            log_details["Color Balance"] = color_balance
-        
-        ext = os.path.splitext(input_path)[1].lower()
-        if ext in [".jpg", ".jpeg", ".tiff"]:
-            try:
-                exif_dict = piexif.load(input_path)
-                logger.debug(f"Original EXIF data: {exif_dict}")
-            except piexif.InvalidImageDataError:
-                exif_dict = {"0th": {}, "Exif": {}, "GPS": {}, "1st": {}, "thumbnail": None}
-                logger.warning(f"No existing EXIF data. Initializing new EXIF dictionary.")
-            if "0th" not in exif_dict:
-                exif_dict["0th"] = {}
-            if "title" in metadata_dict:
-                exif_dict["0th"][piexif.ImageIFD.Artist] = metadata_dict["title"].encode()
-            if "comment" in metadata_dict:
-                exif_dict["0th"][piexif.ImageIFD.ImageDescription] = metadata_dict["comment"].encode()
-            try:
-                exif_bytes = piexif.dump(exif_dict)
-                logger.debug(f"Modified EXIF bytes: {exif_bytes}")
-            except Exception as e:
-                logger.error(f"Failed to dump EXIF data: {e}")
-                exif_bytes = None
-            if exif_bytes:
-                image.save(output_path, exif=exif_bytes)
-                logger.info(f"Photo saved with EXIF data: {output_path}")
-            else:
-                image.save(output_path)
-                logger.info(f"Photo saved without EXIF data: {output_path}")
-        elif ext == ".png":
-            png_info = PngImagePlugin.PngInfo()
-            if "title" in metadata_dict:
-                png_info.add_text("Title", metadata_dict["title"])
-            if "comment" in metadata_dict:
-                png_info.add_text("Description", metadata_dict["comment"])
-            image.save(output_path, pnginfo=png_info)
-            logger.info(f"PNG photo saved с metadata: {output_path}")
-        else:
-            image.save(output_path)
-            logger.info(f"Photo saved without metadata: {output_path}")
-        
-        logger.info(f"Applied parameters: {log_details}")
-        
-        return "Brightness, contrast, saturation, sharpness, and color balance adjusted successfully.", log_details
-    except Exception as e:
-        logger.error(f"Photo processing failed: {e}")
-        raise e
+        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        logger.info(f"Metadata update successful: {output_path}")
+    except subprocess.CalledProcessError as e:
+        logger.error("Failed to set metadata.")
+        logger.error(f"Command: {' '.join(cmd)}")
+        logger.error(f"Error: {e.stderr.decode('utf-8', errors='replace')}")
+        raise
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, контраста, насыщенности, резкости и баланса белого."
+        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, резкости и температуры."
     )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -228,7 +194,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Как пользоваться ботом:\n"
         "1. Отправь видео или фото (как Telegram media или документ).\n"
         "2. Используй /process <n> (например, /process 3), чтобы сгенерировать n уникальных вариантов.\n"
-        "Каждый вариант будет иметь небольшие изменения яркости, контраста, насыщенности, резкости и баланса белого.\n"
+        "Каждый вариант будет иметь небольшие изменения яркости, резкости и температуры.\n"
         "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
@@ -238,12 +204,14 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     file_id = None
     file_name = ""
     file_type = ""
+    
     if message.video:
         file_id = message.video.file_id
         file_name = message.video.file_name or "input_video.mp4"
         file_type = "video"
     elif message.photo:
-        file_id = message.photo[-1].file_id
+        photo: PhotoSize = message.photo[-1]
+        file_id = photo.file_id
         file_name = "input_photo.jpg"
         file_type = "photo"
     elif message.document:
@@ -259,8 +227,13 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await message.reply_text("Пожалуйста, отправь действительный файл видео или фото.")
         return
+    
     if file_id:
-        USER_STATE[user_id] = {"file_id": file_id, "file_name": file_name, "file_type": file_type}
+        USER_STATE[user_id] = {
+            "file_id": file_id,
+            "file_name": file_name,
+            "file_type": file_type
+        }
         await message.reply_text(
             "Файл получен! Теперь используй /process <n>, чтобы указать количество уникальных вариантов."
         )
@@ -268,13 +241,16 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
+    
     if user_id not in USER_STATE or "file_id" not in USER_STATE[user_id]:
         await message.reply_text("Нет сохраненного файла. Пожалуйста, сначала отправь видео или фото.")
         return
+    
     args = context.args
     if len(args) != 1:
         await message.reply_text("Использование: /process <n> (например, /process 3)")
         return
+    
     try:
         n = int(args[0])
         if not (1 <= n <= 10):
@@ -283,85 +259,68 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except ValueError:
         await message.reply_text("Пожалуйста, укажи действительное целое число (1-10).")
         return
+    
     file_id = USER_STATE[user_id]["file_id"]
     file_name = USER_STATE[user_id]["file_name"]
     file_type = USER_STATE[user_id]["file_type"]
-    await message.reply_text(f"Генерация {n} уникальных вариантов. Пожалуйста, подожди...")
-    try:
-        file_obj = await context.bot.get_file(file_id)
-    except Exception as e:
-        logger.error(f"Failed to get file: {e}")
-        await message.reply_text("Не удалось получить файл. Пожалуйста, попробуй снова.")
-        return
+    
     with tempfile.TemporaryDirectory() as tmp_dir:
         input_path = os.path.join(tmp_dir, file_name)
         try:
+            file_obj = await context.bot.get_file(file_id)
             await file_obj.download_to_drive(input_path)
             logger.info(f"Файл скачан в {input_path}")
         except Exception as e:
-            logger.error(f"Failed to download file: {e}")
+            logger.error(f"Не удалось скачать файл: {e}")
             await message.reply_text("Не удалось скачать файл. Пожалуйста, попробуй снова.")
             return
+        
+        file_hash = get_file_hash(input_path)
+        if file_hash in PROCESSED_FILE_IDS:
+            await message.reply_text("Этот файл уже был обработан ранее. Пожалуйста, отправь другой файл.")
+            return
+        PROCESSED_FILE_IDS.add(file_hash)
+        save_processed_file_ids()
+        
         original_meta = get_metadata(input_path, file_type)
+        logger.info("Original Metadata:")
+        logger.info(original_meta)
+        
+        await message.reply_text("Начинаю обработку. Пожалуйста, подожди...")
+        
         output_paths = []
         for i in range(1, n + 1):
-            if file_type == "video":
-                filter_str = f"eq=brightness={0.02 * i}:contrast={0.02 * i}:saturation={0.02 * i}"
-                meta = {
-                    "title": f"Filtered Video #{i}",
-                    "comment": f"Brightness/Contrast/Saturation Variation {i}"
-                }
-                output_file = f"output_{i}.mp4"
-                output_path = os.path.join(tmp_dir, output_file)
-                try:
-                    ff_stdout, ff_stderr = process_video(input_path, output_path, filter_str, meta)
-                except subprocess.CalledProcessError as e:
-                    logger.error(f"Error generating variant #{i}: {e}")
-                    await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
-                    return
-                output_paths.append((output_path, ff_stdout, ff_stderr, "video"))
-            elif file_type == "photo":
-                params = {}
-                for param, config in PARAMETERS.items():
-                    value = config["base"] + config["increment"] * i
-                    value = min(max(value, config["min"]), config["max"]) 
-                    params[param] = round(value, 2)  
-                meta = {
-                    "title": f"Filtered Photo #{i}",
-                    "comment": f"Brightness/Contrast/Saturation/Sharpness/Color Balance Variation {i}"
-                }
-                ext = os.path.splitext(file_name)[1].lower()
-                if ext not in [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]:
-                    ext = ".jpg"
-                output_file = f"output_{i}{ext}"
-                output_path = os.path.join(tmp_dir, output_file)
-                try:
-                    log_stdout, log_details = process_photo(input_path, output_path, params, meta)
-                except Exception as e:
-                    logger.error(f"Error generating variant #{i}: {e}")
-                    await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
-                    return
-                output_paths.append((output_path, log_stdout, log_details, "photo"))
-        for i, (path, log1, log2, f_type) in enumerate(output_paths, 1):
+            metadata_dict = {}
+            for param, config in PARAMETERS.items():
+                value = config["base"] + config["increment"] * i
+                value = min(max(value, config["min"]), config["max"])
+                metadata_dict[param] = f"{value:.2f}"
+            metadata_dict["title"] = f"Meta Variant #{i}"
+            metadata_dict["comment"] = ", ".join([f"{k.capitalize()}={v}" for k, v in metadata_dict.items() if k in PARAMETERS])
+            
+            output_file = f"output_{i}{os.path.splitext(file_name)[1]}"
+            output_path = os.path.join(tmp_dir, output_file)
+            
+            try:
+                set_metadata_ffmpeg(input_path, output_path, metadata_dict)
+            except subprocess.CalledProcessError as e:
+                await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
+                return
+            
+            output_paths.append((output_path, metadata_dict))
+        
+        for i, (path, meta) in enumerate(output_paths, 1):
             if not os.path.isfile(path):
-                logger.error(f"Processed file not found: {path}")
+                logger.error(f"Обработанный файл не найден: {path}")
                 await message.reply_text(f"Ошибка: Обработанный файл для варианта #{i} не найден.")
                 continue
-            updated_meta = get_metadata(path, f_type)
+            updated_meta = get_metadata(path, file_type)
             diff_text = compare_metadata(original_meta, updated_meta)
-            if f_type == "video":
-                ff_logs = f"STDOUT:\n{log1}\nSTDERR:\n{log2}"
-            elif f_type == "photo":
-                ff_logs = "Processing Output:\n"
-                for param, value in log2.items():
-                    ff_logs += f"{param}: {value}\n"
-                ff_logs += f"\nErrors:\n{log1}" if log1 else "No errors."
+            
             summary = (
-                f"Вот вариант #{i} с настройками яркости, контраста, насыщенности, резкости и баланса белого.\n\n"
+                f"Вот вариант #{i} с настройками яркости, резкости и температуры.\n\n"
                 f"--- Изменения в метаданных ---\n"
-                f"{diff_text}\n\n"
-                f"--- Подробные логи ---\n"
-                f"{ff_logs}\n"
+                f"{diff_text}"
             )
             log_file = io.StringIO(summary)
             await message.reply_document(
@@ -370,26 +329,37 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 caption=f"Логи для варианта #{i}"
             )
             with open(path, "rb") as file:
-                if f_type == "video":
+                if file_type == "video":
                     await message.reply_video(video=file)
-                elif f_type == "photo":
+                elif file_type == "photo":
                     await message.reply_photo(photo=file)
+        
         del USER_STATE[user_id]
-    await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
+        await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
+    
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("process", process_command))
+    
     application.add_handler(
         MessageHandler(
             (filters.VIDEO | filters.PHOTO | filters.Document.VIDEO | filters.Document.IMAGE) & ~filters.COMMAND,
             handle_file
         )
     )
+    
     logger.info("Bot is starting. Press Ctrl+C to stop.")
     application.run_polling()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user.")
+    except Exception as e:
+        logger.exception(f"Bot encountered an error: {e}")
+    finally:
+        save_processed_file_ids()
