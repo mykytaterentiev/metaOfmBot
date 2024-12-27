@@ -110,11 +110,11 @@ PARAM_OPTIONS = [0.8, 1.0, 1.2]
 
 def generate_random_params():
     return {
-        "brightness": round(random.uniform(0.9, 1.1), 3),
-        "sharpen": round(random.uniform(0.9, 1.1), 3),
-        "temp": round(random.uniform(0.9, 1.1), 3),
-        "contrast": round(random.uniform(0.9, 1.1), 3),
-        "gamma": round(random.uniform(0.9, 1.1), 3),
+        "brightness": round(random.uniform(0.9, 1.1), 4),
+        "sharpen": round(random.uniform(0.9, 1.1), 4),
+        "temp": round(random.uniform(0.9, 1.1), 4),
+        "contrast": round(random.uniform(0.9, 1.1), 4),
+        "gamma": round(random.uniform(0.9, 1.1), 4),
     }
 
 app = FastAPI()
