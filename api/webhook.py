@@ -138,31 +138,25 @@ def compare_metadata(original_meta, updated_meta):
     lines = []
     original_params = {}
     updated_params = {}
-    
-    for field in PARAMETERS.keys():
-        original_params[field] = "N/A"
-        updated_params[field] = "N/A"
-    
+
     if "comment" in original_meta:
         try:
             parts = original_meta["comment"].split(", ")
             for part in parts:
                 key, value = part.split("=")
-                if key.lower() in PARAMETERS:
-                    original_params[key.lower()] = value
+                original_params[key.lower()] = value
         except:
             pass
-    
+
     if "comment" in updated_meta:
         try:
             parts = updated_meta["comment"].split(", ")
             for part in parts:
                 key, value = part.split("=")
-                if key.lower() in PARAMETERS:
-                    updated_params[key.lower()] = value
+                updated_params[key.lower()] = value
         except:
             pass
-    
+
     for field in PARAMETERS.keys():
         orig_val = original_params.get(field, "N/A")
         new_val = updated_params.get(field, "N/A")
@@ -170,7 +164,7 @@ def compare_metadata(original_meta, updated_meta):
             lines.append(f"{field.capitalize()} изменено:\n    {orig_val} → {new_val}")
         else:
             lines.append(f"{field.capitalize()} не изменено: {orig_val}")
-    
+
     for field in ["title", "comment"]:
         orig_val = original_meta.get(field, "N/A")
         new_val = updated_meta.get(field, "N/A")
@@ -178,7 +172,7 @@ def compare_metadata(original_meta, updated_meta):
             lines.append(f"{field.capitalize()} изменено:\n    {orig_val} → {new_val}")
         else:
             lines.append(f"{field.capitalize()} не изменено: {orig_val}")
-    
+
     return "\n".join(lines)
 
 def get_file_hash(file_path):
@@ -189,22 +183,31 @@ def get_file_hash(file_path):
     return sha256.hexdigest()
 
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
-    brightness_eq = metadata_dict['brightness'] - 1.0  
-    contrast_eq = metadata_dict['contrast']          
-    gamma_eq = metadata_dict['gamma']                 
-    sharpen_amount = metadata_dict['sharpen']        
+    brightness_eq = metadata_dict['brightness'] - 1.0
+    contrast_eq = metadata_dict['contrast']
+    gamma_eq = metadata_dict['gamma']
+    sharpen_amount = metadata_dict['sharpen']
     
     vf_filters = (
         f"eq=brightness={brightness_eq}:contrast={contrast_eq}:gamma={gamma_eq},"
         f"unsharp=5:5:{sharpen_amount}"
     )
     
+    comment_metadata = (
+        f"Brightness={metadata_dict['brightness']}, "
+        f"Sharpen={metadata_dict['sharpen']}, "
+        f"Temperature={metadata_dict['temp']}, "
+        f"Contrast={metadata_dict['contrast']}, "
+        f"Gamma={metadata_dict['gamma']}"
+    )
+    
     cmd = [
         "ffmpeg",
-        "-y",  
+        "-y",
         "-i", input_path,
         "-vf", vf_filters,
-        "-c:a", "copy",  
+        "-metadata", f"comment={comment_metadata}",
+        "-c:a", "copy",
         output_path
     ]
     
