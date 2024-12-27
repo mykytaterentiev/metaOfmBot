@@ -13,7 +13,10 @@ from pymediainfo import MediaInfo
 from PIL import Image
 import piexif
 
-BOT_TOKEN = "7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+if not BOT_TOKEN:
+    raise ValueError("BOT_TOKEN environment variable not set")
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -169,7 +172,8 @@ def get_file_hash(file_path):
     return sha256.hexdigest()
 
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
-    cmd = ["ffmpeg", "-y", "-i", input_path, "-c", "copy"]
+    ffmpeg_path = os.path.join(os.getcwd(), "bin", "ffmpeg")
+    cmd = [ffmpeg_path, "-y", "-i", input_path, "-c", "copy"]
     for key, value in metadata_dict.items():
         cmd.extend(["-metadata", f"{key}={value}"])
     cmd.append(output_path)
@@ -185,7 +189,7 @@ def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, резкости и температуры."
+        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, резкости, температуры, контраста и гаммы."
     )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -193,7 +197,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Как пользоваться ботом:\n"
         "1. Отправь видео или фото (как Telegram media или документ).\n"
         "2. Используй /process <n> (например, /process 3), чтобы сгенерировать n уникальных вариантов.\n"
-        "Каждый вариант будет иметь небольшие изменения яркости, резкости и температуры.\n"
+        "Каждый вариант будет иметь небольшие изменения яркости, резкости, температуры, контраста и гаммы.\n"
         "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
@@ -317,7 +321,7 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             diff_text = compare_metadata(original_meta, updated_meta)
             
             summary = (
-                f"Вот вариант #{i} с настройками яркости, резкости и температуры.\n\n"
+                f"Вот вариант #{i} с настройками яркости, резкости, температуры, контраста и гаммы.\n\n"
                 f"--- Изменения в метаданных ---\n"
                 f"{diff_text}"
             )
