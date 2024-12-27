@@ -8,7 +8,13 @@ import hashlib
 
 from fastapi import FastAPI, Request, Response
 from telegram import Bot, Update, PhotoSize
-from telegram.ext import Dispatcher, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters,
+    ContextTypes,
+)
 from pymediainfo import MediaInfo
 from PIL import Image
 import piexif
@@ -81,10 +87,10 @@ PARAMETERS = {
     }
 }
 
-# Initialize FastAPI app and Telegram bot
+# Initialize FastAPI app and Telegram bot application
 app = FastAPI()
 bot = Bot(token=BOT_TOKEN)
-dispatcher = Dispatcher(bot, update_queue=None, use_context=True)
+application = Application.builder().token(BOT_TOKEN).build()
 
 # Metadata extraction function
 def get_metadata(file_path, file_type):
@@ -181,9 +187,9 @@ def get_file_hash(file_path):
             sha256.update(chunk)
     return sha256.hexdigest()
 
-# Metadata setting function using included ffmpeg
+# Metadata setting function using ffmpeg
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
-    ffmpeg_path = os.path.join(os.getcwd(), "bin", "ffmpeg")
+    ffmpeg_path = os.path.join(os.getcwd(), "bin", "ffmpeg")  # Adjust if using system ffmpeg
     cmd = [ffmpeg_path, "-y", "-i", input_path, "-c", "copy"]
     for key, value in metadata_dict.items():
         cmd.extend(["-metadata", f"{key}={value}"])
@@ -355,10 +361,10 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
 # Register Handlers
-dispatcher.add_handler(CommandHandler("start", start_command))
-dispatcher.add_handler(CommandHandler("help", help_command))
-dispatcher.add_handler(CommandHandler("process", process_command))
-dispatcher.add_handler(
+application.add_handler(CommandHandler("start", start_command))
+application.add_handler(CommandHandler("help", help_command))
+application.add_handler(CommandHandler("process", process_command))
+application.add_handler(
     MessageHandler(
         (filters.VIDEO | filters.PHOTO | filters.Document.VIDEO | filters.Document.IMAGE) & ~filters.COMMAND,
         handle_file
@@ -370,7 +376,7 @@ dispatcher.add_handler(
 async def telegram_webhook(request: Request):
     try:
         update = Update.de_json(await request.json(), bot)
-        dispatcher.process_update(update)
+        await application.dispatcher.process_update(update)
     except Exception as e:
         logger.error(f"Error processing update: {e}")
         return Response(status_code=500)

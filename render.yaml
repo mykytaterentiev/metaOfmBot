@@ -1,12 +1,10 @@
 services:
   - type: web
     name: metaofmbot
-    env: python
-    region: oregon # Adjust if needed
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn api.webhook:app --host 0.0.0.0 --port $PORT
+    env: docker
+    plan: free
+    region: oregon # Adjust if necessary
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: BOT_TOKEN
         value: "7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw"
-    autoDeploy: true
-    plan: free

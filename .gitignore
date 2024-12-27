@@ -7,5 +7,5 @@ __pycache__/
 *.log
 .DS_Store
 processed_files.json
-# Do NOT ignore bin/ffmpeg if you want to include it
+# Uncomment the following line if you decide to include ffmpeg in the repository
 # bin/ffmpeg
