@@ -13,11 +13,13 @@ from pymediainfo import MediaInfo
 from PIL import Image
 import piexif
 
+# Retrieve BOT_TOKEN from environment variables for security
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set")
 
+# Configure logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
@@ -28,8 +30,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Path to store processed file hashes
 PROCESSED_FILE_IDS_PATH = "processed_files.json"
 
+# Load or initialize processed file hashes
 if os.path.exists(PROCESSED_FILE_IDS_PATH):
     with open(PROCESSED_FILE_IDS_PATH, "r") as f:
         PROCESSED_FILE_IDS = set(json.load(f))
@@ -40,8 +44,10 @@ def save_processed_file_ids():
     with open(PROCESSED_FILE_IDS_PATH, "w") as f:
         json.dump(list(PROCESSED_FILE_IDS), f)
 
+# User state management
 USER_STATE = {}
 
+# Parameters for metadata modification
 PARAMETERS = {
     "brightness": {
         "base": 1.0,
@@ -75,10 +81,12 @@ PARAMETERS = {
     }
 }
 
+# Initialize FastAPI app and Telegram bot
 app = FastAPI()
 bot = Bot(token=BOT_TOKEN)
 dispatcher = Dispatcher(bot, update_queue=None, use_context=True)
 
+# Metadata extraction function
 def get_metadata(file_path, file_type):
     if not os.path.isfile(file_path):
         logger.warning(f"get_metadata: File not found: {file_path}")
@@ -116,6 +124,7 @@ def get_metadata(file_path, file_type):
                 logger.error(f"PNG metadata extraction failed: {e}")
     return metadata_dict
 
+# Metadata comparison function
 def compare_metadata(original_meta, updated_meta):
     fields = list(PARAMETERS.keys()) + ["title", "comment"]
     lines = []
@@ -164,6 +173,7 @@ def compare_metadata(original_meta, updated_meta):
     
     return "\n".join(lines)
 
+# File hashing function
 def get_file_hash(file_path):
     sha256 = hashlib.sha256()
     with open(file_path, "rb") as f:
@@ -171,6 +181,7 @@ def get_file_hash(file_path):
             sha256.update(chunk)
     return sha256.hexdigest()
 
+# Metadata setting function using included ffmpeg
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
     ffmpeg_path = os.path.join(os.getcwd(), "bin", "ffmpeg")
     cmd = [ffmpeg_path, "-y", "-i", input_path, "-c", "copy"]
@@ -187,6 +198,7 @@ def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
         logger.error(f"Error: {e.stderr.decode('utf-8', errors='replace')}")
         raise
 
+# Command Handlers
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, резкости, температуры, контраста и гаммы."
@@ -201,6 +213,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
+# File Handler
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
@@ -241,6 +254,7 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Файл получен! Теперь используй /process <n>, чтобы указать количество уникальных вариантов."
         )
 
+# Process Command Handler
 async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
@@ -340,6 +354,7 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         del USER_STATE[user_id]
         await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
+# Register Handlers
 dispatcher.add_handler(CommandHandler("start", start_command))
 dispatcher.add_handler(CommandHandler("help", help_command))
 dispatcher.add_handler(CommandHandler("process", process_command))
@@ -350,6 +365,7 @@ dispatcher.add_handler(
     )
 )
 
+# Webhook Endpoint
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
     try:
