@@ -6,6 +6,7 @@ import io
 import json
 import hashlib
 import random
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
 from telegram import Update, PhotoSize
@@ -20,7 +21,7 @@ from pymediainfo import MediaInfo
 from PIL import Image
 import piexif
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+BOT_TOKEN = '7788269650:AAGuoBLhWwJBfluIzVl-nzDgGxambYyTJC8'
 
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set")
@@ -110,11 +111,11 @@ PARAM_OPTIONS = [0.8, 1.0, 1.2]
 
 def generate_random_params():
     return {
-        "brightness": round(random.uniform(0.9, 1.1), 4),
-        "sharpen": round(random.uniform(0.9, 1.1), 4),
-        "temp": round(random.uniform(0.9, 1.1), 4),
-        "contrast": round(random.uniform(0.9, 1.1), 4),
-        "gamma": round(random.uniform(0.9, 1.1), 4),
+        "brightness": round(random.uniform(0.9, 1.1), 3),
+        "sharpen": round(random.uniform(0.9, 1.1), 3),
+        "temp": round(random.uniform(0.9, 1.1), 3),
+        "contrast": round(random.uniform(0.9, 1.1), 3),
+        "gamma": round(random.uniform(0.9, 1.1), 3),
     }
 
 app = FastAPI()
@@ -498,15 +499,21 @@ application.add_handler(
 async def root():
     return {"message": "metaOfmBot is running."}
 
-@app.on_event("startup")
-async def on_startup():
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
     await application.initialize()
     await application.start()
+    try:
+        yield  # Application runs during this time
+    finally:
+        # Shutdown logic
+        await application.stop()
+        await application.shutdown()
 
-@app.on_event("shutdown")
-async def on_shutdown():
-    await application.stop()
-    await application.shutdown()
+app = FastAPI(lifespan=lifespan)
 
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
