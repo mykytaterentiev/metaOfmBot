@@ -19,13 +19,11 @@ from pymediainfo import MediaInfo
 from PIL import Image
 import piexif
 
-# Retrieve BOT_TOKEN from environment variables for security
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set")
 
-# Configure logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
@@ -36,10 +34,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Path to store processed file hashes
 PROCESSED_FILE_IDS_PATH = "processed_files.json"
 
-# Load or initialize processed file hashes
 if os.path.exists(PROCESSED_FILE_IDS_PATH):
     with open(PROCESSED_FILE_IDS_PATH, "r") as f:
         PROCESSED_FILE_IDS = set(json.load(f))
@@ -50,10 +46,8 @@ def save_processed_file_ids():
     with open(PROCESSED_FILE_IDS_PATH, "w") as f:
         json.dump(list(PROCESSED_FILE_IDS), f)
 
-# User state management
 USER_STATE = {}
 
-# Parameters for metadata modification
 PARAMETERS = {
     "brightness": {
         "base": 1.0,
@@ -87,11 +81,9 @@ PARAMETERS = {
     }
 }
 
-# Initialize FastAPI app and Telegram bot application
 app = FastAPI()
 application = Application.builder().token(BOT_TOKEN).build()
 
-# Metadata extraction function
 def get_metadata(file_path, file_type):
     if not os.path.isfile(file_path):
         logger.warning(f"get_metadata: File not found: {file_path}")
@@ -129,7 +121,6 @@ def get_metadata(file_path, file_type):
                 logger.error(f"PNG metadata extraction failed: {e}")
     return metadata_dict
 
-# Metadata comparison function
 def compare_metadata(original_meta, updated_meta):
     fields = list(PARAMETERS.keys()) + ["title", "comment"]
     lines = []
@@ -178,7 +169,6 @@ def compare_metadata(original_meta, updated_meta):
     
     return "\n".join(lines)
 
-# File hashing function
 def get_file_hash(file_path):
     sha256 = hashlib.sha256()
     with open(file_path, "rb") as f:
@@ -186,9 +176,8 @@ def get_file_hash(file_path):
             sha256.update(chunk)
     return sha256.hexdigest()
 
-# Metadata setting function using ffmpeg
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
-    ffmpeg_path = "ffmpeg"  # Use system ffmpeg
+    ffmpeg_path = "ffmpeg"  
     cmd = [ffmpeg_path, "-y", "-i", input_path, "-c", "copy"]
     for key, value in metadata_dict.items():
         cmd.extend(["-metadata", f"{key}={value}"])
@@ -203,7 +192,6 @@ def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
         logger.error(f"Error: {e.stderr.decode('utf-8', errors='replace')}")
         raise
 
-# Command Handlers
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, резкости, температуры, контраста и гаммы."
@@ -259,7 +247,6 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Файл получен! Теперь используй /process <n>, чтобы указать количество уникальных вариантов."
         )
 
-# Process Command Handler
 async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
@@ -275,7 +262,7 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     try:
         n = int(args[0])
-        if not (1 <= n <= 10):
+        if not (1 <= n <= 20):
             await message.reply_text("Пожалуйста, запроси от 1 до 10 вариантов.")
             return
     except ValueError:
@@ -298,7 +285,6 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         
         file_hash = get_file_hash(input_path)
-        # If using a database, replace the following lines with database checks
         if file_hash in PROCESSED_FILE_IDS:
             await message.reply_text("Этот файл уже был обработан ранее. Пожалуйста, отправь другой файл.")
             return
@@ -360,14 +346,11 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         del USER_STATE[user_id]
         await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
-# Error Handler
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     logger.error(msg="Exception while handling an update:", exc_info=context.error)
-    # Optionally, you can notify the admin or take other actions here
 
 application.add_error_handler(error_handler)
 
-# Register Handlers
 application.add_handler(CommandHandler("start", start_command))
 application.add_handler(CommandHandler("help", help_command))
 application.add_handler(CommandHandler("process", process_command))
@@ -378,24 +361,20 @@ application.add_handler(
     )
 )
 
-# Add a root path handler to respond to health checks
 @app.get("/")
 async def root():
     return {"message": "metaOfmBot is running."}
 
-# FastAPI Startup Event: Initialize and Start the Application
 @app.on_event("startup")
 async def on_startup():
     await application.initialize()
     await application.start()
 
-# FastAPI Shutdown Event: Stop and Shutdown the Application
 @app.on_event("shutdown")
 async def on_shutdown():
     await application.stop()
     await application.shutdown()
 
-# Webhook Endpoint
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
     try:

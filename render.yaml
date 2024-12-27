@@ -3,7 +3,7 @@ services:
     name: metaofmbot
     env: docker
     plan: free
-    region: oregon # Adjust if necessary
+    region: oregon 
     dockerfilePath: ./Dockerfile
     envVars:
       - key: BOT_TOKEN
