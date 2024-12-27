@@ -235,6 +235,36 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
+USER_AUTHENTICATION = {}
+
+async def login_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    username = update.effective_user.username
+
+    if user_id in USER_AUTHENTICATION:
+        await update.message.reply_text(f"Привет, {username}! Вы уже вошли в систему.")
+    else:
+        USER_AUTHENTICATION[user_id] = {"username": username, "logged_in": True}
+        await update.message.reply_text(f"Добро пожаловать, {username}! Вы успешно вошли в систему.")
+
+async def logout_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+
+    if user_id in USER_AUTHENTICATION:
+        del USER_AUTHENTICATION[user_id]
+        await update.message.reply_text("Вы вышли из системы.")
+    else:
+        await update.message.reply_text("Вы не вошли в систему.")
+
+async def restricted_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    if user_id not in USER_AUTHENTICATION:
+        await update.message.reply_text("Пожалуйста, войдите в систему, используя /login.")
+        return
+
+    username = USER_AUTHENTICATION[user_id]["username"]
+    await update.message.reply_text(f"Доступ предоставлен, {username}.")
+
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
@@ -394,6 +424,9 @@ application.add_error_handler(error_handler)
 application.add_handler(CommandHandler("start", start_command))
 application.add_handler(CommandHandler("help", help_command))
 application.add_handler(CommandHandler("process", process_command))
+application.add_handler(CommandHandler("login", login_command))
+application.add_handler(CommandHandler("logout", logout_command))
+application.add_handler(CommandHandler("restricted", restricted_command))
 application.add_handler(
     MessageHandler(
         (filters.VIDEO | filters.PHOTO | filters.Document.VIDEO | filters.Document.IMAGE) & ~filters.COMMAND,
