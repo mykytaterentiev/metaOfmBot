@@ -376,12 +376,24 @@ application.add_handler(
 async def root():
     return {"message": "metaOfmBot is running."}
 
+# FastAPI Startup Event: Initialize the Application
+@app.on_event("startup")
+async def on_startup():
+    await application.initialize()
+    await application.start()
+
+# FastAPI Shutdown Event: Shutdown the Application
+@app.on_event("shutdown")
+async def on_shutdown():
+    await application.stop()
+    await application.shutdown()
+
 # Webhook Endpoint
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
     try:
         update = Update.de_json(await request.json(), bot)
-        await application.process_update(update)
+        await application.process_update(update)  # Corrected line
     except Exception as e:
         logger.error(f"Error processing update: {e}")
         return Response(status_code=500)
