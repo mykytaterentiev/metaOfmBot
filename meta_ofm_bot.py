@@ -4,7 +4,7 @@ import tempfile
 import subprocess
 import io
 
-from telegram import Update, Document, Video
+from telegram import Update
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -17,7 +17,6 @@ from pymediainfo import MediaInfo
 from PIL import Image, ImageEnhance, PngImagePlugin
 import piexif
 
-# Получение токена бота из переменных окружения
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
@@ -25,11 +24,44 @@ if not BOT_TOKEN:
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO  # Уровень логирования изменен на INFO для снижения объема логов
+    level=logging.INFO 
 )
 logger = logging.getLogger(__name__)
 
 USER_STATE = {}
+
+PARAMETERS = {
+    "brightness": {
+        "base": 1.0,
+        "increment": 0.05,
+        "max": 1.5,
+        "min": 0.5
+    },
+    "contrast": {
+        "base": 1.0,
+        "increment": 0.05,
+        "max": 1.5,
+        "min": 0.5
+    },
+    "saturation": {
+        "base": 1.0,
+        "increment": 0.05,
+        "max": 1.5,
+        "min": 0.5
+    },
+    "sharpness": {
+        "base": 1.0,
+        "increment": 0.05,
+        "max": 1.5,
+        "min": 0.5
+    },
+    "color_balance": {
+        "base": 1.0,
+        "increment": 0.05,
+        "max": 1.5,
+        "min": 0.5
+    }
+}
 
 def get_metadata(file_path, file_type):
     if not os.path.isfile(file_path):
@@ -107,13 +139,40 @@ def process_video(input_path, output_path, filter_string, metadata_dict):
             stderr=result.stderr
         )
 
-def process_photo(input_path, output_path, brightness, contrast, metadata_dict):
+def process_photo(input_path, output_path, params, metadata_dict):
     try:
         image = Image.open(input_path)
-        enhancer_brightness = ImageEnhance.Brightness(image)
-        image = enhancer_brightness.enhance(brightness)
-        enhancer_contrast = ImageEnhance.Contrast(image)
-        image = enhancer_contrast.enhance(contrast)
+        log_details = {}
+        
+        brightness = params.get("brightness", 1.0)
+        enhancer = ImageEnhance.Brightness(image)
+        image = enhancer.enhance(brightness)
+        log_details["Brightness"] = brightness
+        
+        contrast = params.get("contrast", 1.0)
+        enhancer = ImageEnhance.Contrast(image)
+        image = enhancer.enhance(contrast)
+        log_details["Contrast"] = contrast
+        
+        saturation = params.get("saturation", 1.0)
+        enhancer = ImageEnhance.Color(image)
+        image = enhancer.enhance(saturation)
+        log_details["Saturation"] = saturation
+        
+        sharpness = params.get("sharpness", 1.0)
+        enhancer = ImageEnhance.Sharpness(image)
+        image = enhancer.enhance(sharpness)
+        log_details["Sharpness"] = sharpness
+        
+        color_balance = params.get("color_balance", 1.0)
+        if color_balance != 1.0:
+            r, g, b = image.split()
+            r = r.point(lambda i: i * color_balance)
+            g = g.point(lambda i: i * color_balance)
+            b = b.point(lambda i: i * color_balance)
+            image = Image.merge('RGB', (r, g, b))
+            log_details["Color Balance"] = color_balance
+        
         ext = os.path.splitext(input_path)[1].lower()
         if ext in [".jpg", ".jpeg", ".tiff"]:
             try:
@@ -151,14 +210,17 @@ def process_photo(input_path, output_path, brightness, contrast, metadata_dict):
         else:
             image.save(output_path)
             logger.info(f"Photo saved without metadata: {output_path}")
-        return "Brightness and contrast adjusted successfully.", ""
+        
+        logger.info(f"Applied parameters: {log_details}")
+        
+        return "Brightness, contrast, saturation, sharpness, and color balance adjusted successfully.", log_details
     except Exception as e:
         logger.error(f"Photo processing failed: {e}")
         raise e
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными яркостью/контрастом и метаданными."
+        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными настройками яркости, контраста, насыщенности, резкости и баланса белого."
     )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -166,7 +228,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Как пользоваться ботом:\n"
         "1. Отправь видео или фото (как Telegram media или документ).\n"
         "2. Используй /process <n> (например, /process 3), чтобы сгенерировать n уникальных вариантов.\n"
-        "Каждый вариант будет иметь разные настройки яркости/контраста и уникальные метаданные.\n"
+        "Каждый вариант будет иметь небольшие изменения яркости, контраста, насыщенности, резкости и баланса белого.\n"
         "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
@@ -244,10 +306,10 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         output_paths = []
         for i in range(1, n + 1):
             if file_type == "video":
-                filter_str = f"eq=brightness={0.05 * i}:contrast={1.1 * i}"
+                filter_str = f"eq=brightness={0.02 * i}:contrast={0.02 * i}:saturation={0.02 * i}"
                 meta = {
                     "title": f"Filtered Video #{i}",
-                    "comment": f"Brightness/Contrast Variation {i}"
+                    "comment": f"Brightness/Contrast/Saturation Variation {i}"
                 }
                 output_file = f"output_{i}.mp4"
                 output_path = os.path.join(tmp_dir, output_file)
@@ -259,26 +321,27 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     return
                 output_paths.append((output_path, ff_stdout, ff_stderr, "video"))
             elif file_type == "photo":
-                # Ограничение увеличения яркости и контраста
-                brightness = min(1.0 + 0.05 * i, 1.5)  # Максимум +0.5
-                contrast = min(1.0 + 0.1 * i, 2.0)    # Максимум +1.0
+                params = {}
+                for param, config in PARAMETERS.items():
+                    value = config["base"] + config["increment"] * i
+                    value = min(max(value, config["min"]), config["max"]) 
+                    params[param] = round(value, 2)  
                 meta = {
                     "title": f"Filtered Photo #{i}",
-                    "comment": f"Brightness/Contrast Variation {i}"
+                    "comment": f"Brightness/Contrast/Saturation/Sharpness/Color Balance Variation {i}"
                 }
                 ext = os.path.splitext(file_name)[1].lower()
                 if ext not in [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]:
-                    # Default to .jpg if unsupported extension
                     ext = ".jpg"
                 output_file = f"output_{i}{ext}"
                 output_path = os.path.join(tmp_dir, output_file)
                 try:
-                    log_stdout, log_stderr = process_photo(input_path, output_path, brightness, contrast, meta)
+                    log_stdout, log_details = process_photo(input_path, output_path, params, meta)
                 except Exception as e:
                     logger.error(f"Error generating variant #{i}: {e}")
                     await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
                     return
-                output_paths.append((output_path, log_stdout, log_stderr, "photo"))
+                output_paths.append((output_path, log_stdout, log_details, "photo"))
         for i, (path, log1, log2, f_type) in enumerate(output_paths, 1):
             if not os.path.isfile(path):
                 logger.error(f"Processed file not found: {path}")
@@ -289,9 +352,12 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if f_type == "video":
                 ff_logs = f"STDOUT:\n{log1}\nSTDERR:\n{log2}"
             elif f_type == "photo":
-                ff_logs = f"Processing Output:\n{log1}\nErrors:\n{log2}"
+                ff_logs = "Processing Output:\n"
+                for param, value in log2.items():
+                    ff_logs += f"{param}: {value}\n"
+                ff_logs += f"\nErrors:\n{log1}" if log1 else "No errors."
             summary = (
-                f"Вот вариант #{i} с настройками яркости/контраста.\n\n"
+                f"Вот вариант #{i} с настройками яркости, контраста, насыщенности, резкости и баланса белого.\n\n"
                 f"--- Изменения в метаданных ---\n"
                 f"{diff_text}\n\n"
                 f"--- Подробные логи ---\n"
@@ -308,7 +374,6 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await message.reply_video(video=file)
                 elif f_type == "photo":
                     await message.reply_photo(photo=file)
-        # Очистка состояния пользователя после обработки
         del USER_STATE[user_id]
     await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
