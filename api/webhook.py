@@ -86,11 +86,11 @@ PARAM_OPTIONS = [0.8, 1.0, 1.2]
 
 def generate_random_params():
     return {
-        "brightness": random.choice(PARAM_OPTIONS),
-        "sharpen": random.choice(PARAM_OPTIONS),
-        "temp": random.choice(PARAM_OPTIONS),
-        "contrast": random.choice(PARAM_OPTIONS),
-        "gamma": random.choice(PARAM_OPTIONS)
+        "brightness": round(random.uniform(0.9, 1.1), 3),
+        "sharpen": round(random.uniform(0.9, 1.1), 3),
+        "temp": round(random.uniform(0.9, 1.1), 3),
+        "contrast": round(random.uniform(0.9, 1.1), 3),
+        "gamma": round(random.uniform(0.9, 1.1), 3),
     }
 
 app = FastAPI()
@@ -338,7 +338,11 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await message.reply_text("Не удалось сгенерировать уникальные параметры для варианта.")
                 return
             
-            logger.info(f"Variant #{i} Parameters: {params}")
+            logger.info(
+                f"Variant #{i} generated parameters:\n"
+                f"Brightness: {params['brightness']}, Sharpen: {params['sharpen']}, "
+                f"Temperature: {params['temp']}, Contrast: {params['contrast']}, Gamma: {params['gamma']}"
+            )
             
             try:
                 output_file = f"output_{i}{os.path.splitext(file_name)[1]}"
