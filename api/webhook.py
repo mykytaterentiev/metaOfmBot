@@ -5,6 +5,7 @@ import subprocess
 import io
 import json
 import hashlib
+import random
 
 from fastapi import FastAPI, Request, Response
 from telegram import Update, PhotoSize
@@ -52,34 +53,45 @@ PARAMETERS = {
     "brightness": {
         "base": 1.0,
         "increment": 0.03,
-        "max": 1.5,
-        "min": 0.5
+        "max": 1.2,
+        "min": 0.8
     },
     "sharpen": {
         "base": 1.0,
         "increment": 0.03,
-        "max": 1.5,
-        "min": 0.5
+        "max": 1.2,
+        "min": 0.8
     },
     "temp": {
         "base": 1.0,
         "increment": 0.03,
-        "max": 1.5,
-        "min": 0.5
+        "max": 1.2,
+        "min": 0.8
     },
     "contrast": {
         "base": 1.0,
         "increment": 0.03,
-        "max": 1.5,
-        "min": 0.5
+        "max": 1.2,
+        "min": 0.8
     },
     "gamma": {
         "base": 1.0,
         "increment": 0.03,
-        "max": 1.5,
-        "min": 0.5
+        "max": 1.2,
+        "min": 0.8
     }
 }
+
+PARAM_OPTIONS = [0.8, 1.0, 1.2]
+
+def generate_random_params():
+    return {
+        "brightness": random.choice(PARAM_OPTIONS),
+        "sharpen": random.choice(PARAM_OPTIONS),
+        "temp": random.choice(PARAM_OPTIONS),
+        "contrast": random.choice(PARAM_OPTIONS),
+        "gamma": random.choice(PARAM_OPTIONS)
+    }
 
 app = FastAPI()
 application = Application.builder().token(BOT_TOKEN).build()
@@ -177,17 +189,31 @@ def get_file_hash(file_path):
     return sha256.hexdigest()
 
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
-    ffmpeg_path = "ffmpeg"  
-    cmd = [ffmpeg_path, "-y", "-i", input_path, "-c", "copy"]
-    for key, value in metadata_dict.items():
-        cmd.extend(["-metadata", f"{key}={value}"])
-    cmd.append(output_path)
-    logger.info(f"Running ffmpeg command: {' '.join(cmd)}")
+    brightness_eq = metadata_dict['brightness'] - 1.0  
+    contrast_eq = metadata_dict['contrast']          
+    gamma_eq = metadata_dict['gamma']                 
+    sharpen_amount = metadata_dict['sharpen']        
+    
+    vf_filters = (
+        f"eq=brightness={brightness_eq}:contrast={contrast_eq}:gamma={gamma_eq},"
+        f"unsharp=5:5:{sharpen_amount}"
+    )
+    
+    cmd = [
+        "ffmpeg",
+        "-y",  
+        "-i", input_path,
+        "-vf", vf_filters,
+        "-c:a", "copy",  
+        output_path
+    ]
+    
+    logger.info(f"Running FFmpeg command: {' '.join(cmd)}")
     try:
         subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        logger.info(f"Metadata update successful: {output_path}")
+        logger.info(f"Metadata update and video processing successful: {output_path}")
     except subprocess.CalledProcessError as e:
-        logger.error("Failed to set metadata.")
+        logger.error("Failed to set metadata and process video.")
         logger.error(f"Command: {' '.join(cmd)}")
         logger.error(f"Error: {e.stderr.decode('utf-8', errors='replace')}")
         raise
@@ -206,7 +232,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
-# File Handler
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
@@ -262,7 +287,7 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     try:
         n = int(args[0])
-        if not (1 <= n <= 20):
+        if not (1 <= n <= 10):
             await message.reply_text("Пожалуйста, запроси от 1 до 10 вариантов.")
             return
     except ValueError:
@@ -297,26 +322,34 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         await message.reply_text("Начинаю обработку. Пожалуйста, подожди...")
         
+        used_combinations = set()
         output_paths = []
         for i in range(1, n + 1):
-            metadata_dict = {}
-            for param, config in PARAMETERS.items():
-                value = config["base"] + config["increment"] * i
-                value = min(max(value, config["min"]), config["max"])
-                metadata_dict[param] = f"{value:.2f}"
-            metadata_dict["title"] = f"Meta Variant #{i}"
-            metadata_dict["comment"] = ", ".join([f"{k.capitalize()}={v}" for k, v in metadata_dict.items() if k in PARAMETERS])
+            max_attempts = 5
+            attempt = 0
+            while attempt < max_attempts:
+                params = generate_random_params()
+                params_tuple = tuple(params[param] for param in PARAMETERS)
+                if params_tuple not in used_combinations:
+                    used_combinations.add(params_tuple)
+                    break
+                attempt += 1
+            else:
+                await message.reply_text("Не удалось сгенерировать уникальные параметры для варианта.")
+                return
             
-            output_file = f"output_{i}{os.path.splitext(file_name)[1]}"
-            output_path = os.path.join(tmp_dir, output_file)
+            logger.info(f"Variant #{i} Parameters: {params}")
             
             try:
-                set_metadata_ffmpeg(input_path, output_path, metadata_dict)
+                output_file = f"output_{i}{os.path.splitext(file_name)[1]}"
+                output_path = os.path.join(tmp_dir, output_file)
+                
+                set_metadata_ffmpeg(input_path, output_path, params)
+                
+                output_paths.append((output_path, params))
             except subprocess.CalledProcessError as e:
                 await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
                 return
-            
-            output_paths.append((output_path, metadata_dict))
         
         for i, (path, meta) in enumerate(output_paths, 1):
             if not os.path.isfile(path):
