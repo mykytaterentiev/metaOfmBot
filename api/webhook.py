@@ -7,7 +7,7 @@ import json
 import hashlib
 
 from fastapi import FastAPI, Request, Response
-from telegram import Bot, Update, PhotoSize
+from telegram import Update, PhotoSize
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -89,7 +89,6 @@ PARAMETERS = {
 
 # Initialize FastAPI app and Telegram bot application
 app = FastAPI()
-bot = Bot(token=BOT_TOKEN)
 application = Application.builder().token(BOT_TOKEN).build()
 
 # Metadata extraction function
@@ -189,7 +188,7 @@ def get_file_hash(file_path):
 
 # Metadata setting function using ffmpeg
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
-    ffmpeg_path = os.path.join(os.getcwd(), "bin", "ffmpeg")  # Adjust if using system ffmpeg
+    ffmpeg_path = "ffmpeg"  # Use system ffmpeg
     cmd = [ffmpeg_path, "-y", "-i", input_path, "-c", "copy"]
     for key, value in metadata_dict.items():
         cmd.extend(["-metadata", f"{key}={value}"])
@@ -299,6 +298,7 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         
         file_hash = get_file_hash(input_path)
+        # If using a database, replace the following lines with database checks
         if file_hash in PROCESSED_FILE_IDS:
             await message.reply_text("Этот файл уже был обработан ранее. Пожалуйста, отправь другой файл.")
             return
@@ -360,6 +360,13 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         del USER_STATE[user_id]
         await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
+# Error Handler
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
+    logger.error(msg="Exception while handling an update:", exc_info=context.error)
+    # Optionally, you can notify the admin or take other actions here
+
+application.add_error_handler(error_handler)
+
 # Register Handlers
 application.add_handler(CommandHandler("start", start_command))
 application.add_handler(CommandHandler("help", help_command))
@@ -376,13 +383,13 @@ application.add_handler(
 async def root():
     return {"message": "metaOfmBot is running."}
 
-# FastAPI Startup Event: Initialize the Application
+# FastAPI Startup Event: Initialize and Start the Application
 @app.on_event("startup")
 async def on_startup():
     await application.initialize()
     await application.start()
 
-# FastAPI Shutdown Event: Shutdown the Application
+# FastAPI Shutdown Event: Stop and Shutdown the Application
 @app.on_event("shutdown")
 async def on_shutdown():
     await application.stop()
@@ -392,8 +399,8 @@ async def on_shutdown():
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
     try:
-        update = Update.de_json(await request.json(), bot)
-        await application.process_update(update)  # Corrected line
+        update = Update.de_json(await request.json(), application.bot)
+        await application.process_update(update)
     except Exception as e:
         logger.error(f"Error processing update: {e}")
         return Response(status_code=500)
