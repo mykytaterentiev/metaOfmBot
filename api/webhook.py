@@ -381,7 +381,7 @@ async def root():
 async def telegram_webhook(request: Request):
     try:
         update = Update.de_json(await request.json(), bot)
-        await application.dispatcher.process_update(update)
+        await application.process_update(update)
     except Exception as e:
         logger.error(f"Error processing update: {e}")
         return Response(status_code=500)
