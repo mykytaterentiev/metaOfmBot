@@ -49,7 +49,7 @@ def save_processed_file_ids():
 
 USER_STATE = {}
 
-ADMIN_IDS = [Nepmman]   # type: ignore
+ADMIN_IDS = ["Nepmman"]  
 
 async def admin_only(update: Update):
     user_id = update.effective_user.id
