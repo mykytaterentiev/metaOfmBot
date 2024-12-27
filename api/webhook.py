@@ -49,6 +49,16 @@ def save_processed_file_ids():
 
 USER_STATE = {}
 
+ADMIN_IDS = [Nepmman]   # type: ignore
+
+async def admin_only(update: Update):
+    user_id = update.effective_user.id
+    if user_id not in ADMIN_IDS:
+        await update.message.reply_text("Эта команда доступна только администраторам.")
+        return False
+    return True
+
+
 PARAMETERS = {
     "brightness": {
         "base": 1.0,
@@ -81,6 +91,20 @@ PARAMETERS = {
         "min": 0.8
     }
 }
+
+USER_DATA_FILE = "user_data.json"
+
+def load_user_data():
+    if os.path.exists(USER_DATA_FILE):
+        with open(USER_DATA_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def save_user_data():
+    with open(USER_DATA_FILE, "w") as f:
+        json.dump(USER_AUTHENTICATION, f)
+
+USER_AUTHENTICATION = load_user_data()
 
 PARAM_OPTIONS = [0.8, 1.0, 1.2]
 
@@ -265,6 +289,40 @@ async def restricted_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
     username = USER_AUTHENTICATION[user_id]["username"]
     await update.message.reply_text(f"Доступ предоставлен, {username}.")
 
+async def add_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await admin_only(update):
+        return
+    args = context.args
+    if len(args) != 1:
+        await update.message.reply_text("Использование: /add_user <user_id>")
+        return
+    try:
+        new_user_id = int(args[0])
+        if new_user_id in USER_AUTHENTICATION:
+            await update.message.reply_text(f"Пользователь {new_user_id} уже зарегистрирован.")
+        else:
+            USER_AUTHENTICATION[new_user_id] = {"username": "Unknown", "logged_in": True}
+            await update.message.reply_text(f"Пользователь с ID {new_user_id} добавлен.")
+    except ValueError:
+        await update.message.reply_text("Неверный ID пользователя.")
+
+async def remove_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await admin_only(update):
+        return
+    args = context.args
+    if len(args) != 1:
+        await update.message.reply_text("Использование: /remove_user <user_id>")
+        return
+    try:
+        remove_user_id = int(args[0])
+        if remove_user_id in USER_AUTHENTICATION:
+            del USER_AUTHENTICATION[remove_user_id]
+            await update.message.reply_text(f"Пользователь с ID {remove_user_id} удален.")
+        else:
+            await update.message.reply_text("Пользователь не найден.")
+    except ValueError:
+        await update.message.reply_text("Неверный ID пользователя.")
+
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
@@ -426,6 +484,8 @@ application.add_handler(CommandHandler("help", help_command))
 application.add_handler(CommandHandler("process", process_command))
 application.add_handler(CommandHandler("login", login_command))
 application.add_handler(CommandHandler("logout", logout_command))
+application.add_handler(CommandHandler("add_user", add_user))
+application.add_handler(CommandHandler("remove_user", remove_user))
 application.add_handler(CommandHandler("restricted", restricted_command))
 application.add_handler(
     MessageHandler(
