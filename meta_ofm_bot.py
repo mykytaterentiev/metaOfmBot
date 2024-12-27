@@ -17,11 +17,15 @@ from pymediainfo import MediaInfo
 from PIL import Image, ImageEnhance, PngImagePlugin
 import piexif
 
-BOT_TOKEN = "7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw"
+# Получение токена бота из переменных окружения
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+if not BOT_TOKEN:
+    raise ValueError("BOT_TOKEN environment variable not set")
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.DEBUG 
+    level=logging.INFO  # Уровень логирования изменен на INFO для снижения объема логов
 )
 logger = logging.getLogger(__name__)
 
@@ -71,9 +75,9 @@ def compare_metadata(original_meta, updated_meta):
         orig_val = original_meta.get(field, "N/A")
         new_val = updated_meta.get(field, "N/A")
         if orig_val != new_val:
-            lines.append(f"{field.capitalize()} changed:\n    {orig_val} → {new_val}")
+            lines.append(f"{field.capitalize()} изменено:\n    {orig_val} → {new_val}")
         else:
-            lines.append(f"{field.capitalize()} is unchanged: {orig_val}")
+            lines.append(f"{field.capitalize()} не изменено: {orig_val}")
     return "\n".join(lines)
 
 def process_video(input_path, output_path, filter_string, metadata_dict):
@@ -90,7 +94,6 @@ def process_video(input_path, output_path, filter_string, metadata_dict):
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
         logger.info(f"Video processed successfully: {output_path}")
-        logger.debug(f"FFmpeg STDOUT: {result.stdout}")
         logger.debug(f"FFmpeg STDERR: {result.stderr}")
         return result.stdout, result.stderr
     else:
@@ -144,7 +147,7 @@ def process_photo(input_path, output_path, brightness, contrast, metadata_dict):
             if "comment" in metadata_dict:
                 png_info.add_text("Description", metadata_dict["comment"])
             image.save(output_path, pnginfo=png_info)
-            logger.info(f"PNG photo saved with metadata: {output_path}")
+            logger.info(f"PNG photo saved с metadata: {output_path}")
         else:
             image.save(output_path)
             logger.info(f"Photo saved without metadata: {output_path}")
@@ -155,16 +158,16 @@ def process_photo(input_path, output_path, brightness, contrast, metadata_dict):
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Hello! Send me a video or photo, then use /process <n> to generate n unique outputs with different brightness/contrast and metadata."
+        "Привет! Отправь мне видео или фото, затем используй /process <n>, чтобы сгенерировать n уникальных вариантов с разными яркостью/контрастом и метаданными."
     )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Steps to use the bot:\n"
-        "1. Send a video or photo (as Telegram media or a document).\n"
-        "2. Use /process <n> (e.g., /process 3) to generate n unique outputs.\n"
-        "Each output will have different brightness/contrast settings and unique metadata.\n"
-        "You'll receive detailed logs comparing the original and updated metadata."
+        "Как пользоваться ботом:\n"
+        "1. Отправь видео или фото (как Telegram media или документ).\n"
+        "2. Используй /process <n> (например, /process 3), чтобы сгенерировать n уникальных вариантов.\n"
+        "Каждый вариант будет иметь разные настройки яркости/контраста и уникальные метаданные.\n"
+        "Ты получишь подробные логи сравнения оригинальных и обновленных метаданных."
     )
 
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -192,50 +195,50 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file_name = message.document.file_name or "input_photo.jpg"
             file_type = "photo"
     else:
-        await message.reply_text("Please send a valid video or photo file.")
+        await message.reply_text("Пожалуйста, отправь действительный файл видео или фото.")
         return
     if file_id:
         USER_STATE[user_id] = {"file_id": file_id, "file_name": file_name, "file_type": file_type}
         await message.reply_text(
-            "File received! Now use /process <n> to specify how many unique outputs you want."
+            "Файл получен! Теперь используй /process <n>, чтобы указать количество уникальных вариантов."
         )
 
 async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
     if user_id not in USER_STATE or "file_id" not in USER_STATE[user_id]:
-        await message.reply_text("No file on record. Please send a video or photo first.")
+        await message.reply_text("Нет сохраненного файла. Пожалуйста, сначала отправь видео или фото.")
         return
     args = context.args
     if len(args) != 1:
-        await message.reply_text("Usage: /process <n> (e.g., /process 3)")
+        await message.reply_text("Использование: /process <n> (например, /process 3)")
         return
     try:
         n = int(args[0])
         if not (1 <= n <= 10):
-            await message.reply_text("Please request between 1 and 10 outputs.")
+            await message.reply_text("Пожалуйста, запроси от 1 до 10 вариантов.")
             return
     except ValueError:
-        await message.reply_text("Please provide a valid integer (1-10).")
+        await message.reply_text("Пожалуйста, укажи действительное целое число (1-10).")
         return
     file_id = USER_STATE[user_id]["file_id"]
     file_name = USER_STATE[user_id]["file_name"]
     file_type = USER_STATE[user_id]["file_type"]
-    await message.reply_text(f"Generating {n} unique outputs. Please wait...")
+    await message.reply_text(f"Генерация {n} уникальных вариантов. Пожалуйста, подожди...")
     try:
         file_obj = await context.bot.get_file(file_id)
     except Exception as e:
         logger.error(f"Failed to get file: {e}")
-        await message.reply_text("Failed to retrieve the file. Please try again.")
+        await message.reply_text("Не удалось получить файл. Пожалуйста, попробуй снова.")
         return
     with tempfile.TemporaryDirectory() as tmp_dir:
         input_path = os.path.join(tmp_dir, file_name)
         try:
             await file_obj.download_to_drive(input_path)
-            logger.info(f"Downloaded file to {input_path}")
+            logger.info(f"Файл скачан в {input_path}")
         except Exception as e:
             logger.error(f"Failed to download file: {e}")
-            await message.reply_text("Failed to download the file. Please try again.")
+            await message.reply_text("Не удалось скачать файл. Пожалуйста, попробуй снова.")
             return
         original_meta = get_metadata(input_path, file_type)
         output_paths = []
@@ -252,12 +255,13 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     ff_stdout, ff_stderr = process_video(input_path, output_path, filter_str, meta)
                 except subprocess.CalledProcessError as e:
                     logger.error(f"Error generating variant #{i}: {e}")
-                    await message.reply_text(f"Error generating variant #{i}: {e}")
+                    await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
                     return
                 output_paths.append((output_path, ff_stdout, ff_stderr, "video"))
             elif file_type == "photo":
-                brightness = 1.0 + 0.1 * i
-                contrast = 1.0 + 0.1 * i
+                # Ограничение увеличения яркости и контраста
+                brightness = min(1.0 + 0.05 * i, 1.5)  # Максимум +0.5
+                contrast = min(1.0 + 0.1 * i, 2.0)    # Максимум +1.0
                 meta = {
                     "title": f"Filtered Photo #{i}",
                     "comment": f"Brightness/Contrast Variation {i}"
@@ -272,13 +276,13 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     log_stdout, log_stderr = process_photo(input_path, output_path, brightness, contrast, meta)
                 except Exception as e:
                     logger.error(f"Error generating variant #{i}: {e}")
-                    await message.reply_text(f"Error generating variant #{i}: {e}")
+                    await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
                     return
                 output_paths.append((output_path, log_stdout, log_stderr, "photo"))
         for i, (path, log1, log2, f_type) in enumerate(output_paths, 1):
             if not os.path.isfile(path):
                 logger.error(f"Processed file not found: {path}")
-                await message.reply_text(f"Error: Processed file for variant #{i} not found.")
+                await message.reply_text(f"Ошибка: Обработанный файл для варианта #{i} не найден.")
                 continue
             updated_meta = get_metadata(path, f_type)
             diff_text = compare_metadata(original_meta, updated_meta)
@@ -287,24 +291,26 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             elif f_type == "photo":
                 ff_logs = f"Processing Output:\n{log1}\nErrors:\n{log2}"
             summary = (
-                f"Here is #{i} with custom brightness/contrast.\n\n"
-                f"--- Metadata changes ---\n"
+                f"Вот вариант #{i} с настройками яркости/контраста.\n\n"
+                f"--- Изменения в метаданных ---\n"
                 f"{diff_text}\n\n"
-                f"--- Detailed Logs ---\n"
+                f"--- Подробные логи ---\n"
                 f"{ff_logs}\n"
             )
             log_file = io.StringIO(summary)
             await message.reply_document(
                 document=log_file,
                 filename=f"variant_{i}_logs.txt",
-                caption=f"Logs for variant #{i}"
+                caption=f"Логи для варианта #{i}"
             )
             with open(path, "rb") as file:
                 if f_type == "video":
                     await message.reply_video(video=file)
                 elif f_type == "photo":
                     await message.reply_photo(photo=file)
-    await message.reply_text("All done! Send another file or use /help for more commands.")
+        # Очистка состояния пользователя после обработки
+        del USER_STATE[user_id]
+    await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
