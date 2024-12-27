@@ -371,6 +371,11 @@ application.add_handler(
     )
 )
 
+# Add a root path handler to respond to health checks
+@app.get("/")
+async def root():
+    return {"message": "metaOfmBot is running."}
+
 # Webhook Endpoint
 @app.post("/webhook")
 async def telegram_webhook(request: Request):

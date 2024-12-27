@@ -25,9 +25,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
-# Make ffmpeg executable if it's included locally
-# If you're using the system ffmpeg installed above, you can skip this
-# RUN chmod +x bin/ffmpeg
+# Expose the port (optional, for documentation)
+EXPOSE 8080
 
-# Define the command to run the application
-CMD ["uvicorn", "api.webhook:app", "--host", "0.0.0.0", "--port", "8080"]
+# Define the command to run the application using the PORT environment variable
+CMD ["sh", "-c", "uvicorn api.webhook:app --host 0.0.0.0 --port $PORT"]
