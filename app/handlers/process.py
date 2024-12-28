@@ -5,15 +5,15 @@ import tempfile
 import json
 import io
 import random
-import subprocess  # Ensure subprocess is imported
+import subprocess
 from telegram import Update, PhotoSize
 from telegram.ext import ContextTypes
 
-from app.config import PARAMETERS, PARAM_OPTIONS, PROCESSED_FILE_IDS_PATH, USER_DATA_FILE
+from app.config import PARAMETERS, PROCESSED_FILE_IDS_PATH
 from app.utils.metadata import get_metadata, compare_metadata, get_file_hash
 from app.utils.file_processing import set_metadata_ffmpeg
 from app.utils.logging_config import logger
-from app.utils.user_state import USER_STATE  # Import shared USER_STATE
+from app.utils.user_state import USER_STATE
 
 PROCESSED_FILE_IDS = set()
 
