@@ -21,7 +21,7 @@ from pymediainfo import MediaInfo
 from PIL import Image
 import piexif
 
-BOT_TOKEN = '7788269650:AAH4xN2FsPEzSNNO8fY89tdgMTAzke0MlKg'
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set")
