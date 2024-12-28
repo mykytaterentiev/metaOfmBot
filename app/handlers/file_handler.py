@@ -1,3 +1,5 @@
+# app/handlers/file_handler.py
+
 import os
 import json
 import logging
@@ -6,6 +8,7 @@ from telegram.ext import ContextTypes
 
 from app.config import PROCESSED_FILE_IDS_PATH
 from app.utils.logging_config import logger
+from app.utils.user_state import USER_STATE  # Import shared USER_STATE
 
 PROCESSED_FILE_IDS = set()
 
@@ -18,8 +21,6 @@ else:
 def save_processed_file_ids():
     with open(PROCESSED_FILE_IDS_PATH, "w") as f:
         json.dump(list(PROCESSED_FILE_IDS), f)
-
-USER_STATE = {}
 
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message

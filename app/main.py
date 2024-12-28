@@ -1,3 +1,5 @@
+# app/main.py
+
 import json
 from contextlib import asynccontextmanager
 
@@ -16,7 +18,7 @@ from app.utils.logging_config import logger
 from app.handlers.start import start_command
 from app.handlers.help import help_command
 from app.handlers.process import process_command
-from app.handlers.file_handler import handle_file  # Ensure correct import
+from app.handlers.file_handler import handle_file
 from app.utils.metadata import get_file_hash
 
 # Initialize FastAPI

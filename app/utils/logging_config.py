@@ -1,11 +1,15 @@
-import logging
+# app/utils/logging_config.py
 
-# Configure logging
+import logging
+from logging.handlers import RotatingFileHandler
+
+# Configure logging with RotatingFileHandler to prevent log files from growing indefinitely
+handler = RotatingFileHandler("app/bot.log", maxBytes=5*1024*1024, backupCount=5)
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
     handlers=[
-        logging.FileHandler("app/bot.log"),
+        handler,
         logging.StreamHandler()
     ]
 )
