@@ -1,10 +1,14 @@
 # Use a lightweight base image
 FROM python:3.11-slim
 
-# Install FFmpeg and necessary dependencies
+# Install system dependencies
 RUN apt-get update && \
-    apt-get install -y ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends \
+        ffmpeg \
+        libmediainfo0v5 \
+        libzen0v5 \
+        libxml2 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /app
