@@ -12,19 +12,17 @@ from telegram.ext import (
 )
 
 from app.config import BOT_TOKEN
-from app.utils.logging_config import setup_logging
+from app.utils.logging_config import logger  # Correct import
 from app.handlers.start import start_command
 from app.handlers.help import help_command
 from app.handlers.process import process_command
 from app.handlers.file_handler import handle_file
 from app.utils.metadata import get_file_hash
-from app.utils.metadata import get_metadata, compare_metadata
-from app.utils.file_processing import set_metadata_ffmpeg
 
-# Setup logging
-logger = setup_logging()
-
+# Initialize FastAPI
 app = FastAPI()
+
+# Initialize Telegram Bot Application
 application = Application.builder().token(BOT_TOKEN).build()
 
 # Error handler

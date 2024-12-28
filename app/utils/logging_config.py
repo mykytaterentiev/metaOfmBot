@@ -10,5 +10,5 @@ logging.basicConfig(
     ]
 )
 
-# Create a logger for this module
+# Create a logger for the bot
 logger = logging.getLogger("metaOfmBot")  # Use a consistent logger name
