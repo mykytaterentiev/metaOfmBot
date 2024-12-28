@@ -1,0 +1,310 @@
+2024-12-27 09:44:19,152 - __main__ - INFO - Bot is starting. Press Ctrl+C to stop.
+2024-12-27 09:44:19,414 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getMe "HTTP/1.1 200 OK"
+2024-12-27 09:44:19,469 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/deleteWebhook "HTTP/1.1 200 OK"
+2024-12-27 09:44:19,472 - telegram.ext.Application - INFO - Application started
+2024-12-27 09:44:29,761 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:44:34,317 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:44:34,623 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:44:39,866 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:44:40,527 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:44:40,693 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/photos/file_17.jpg "HTTP/1.1 200 OK"
+2024-12-27 09:44:41,080 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg
+2024-12-27 09:44:41,082 - __main__ - INFO - Original Metadata:
+2024-12-27 09:44:41,083 - __main__ - INFO - {}
+2024-12-27 09:44:41,411 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:44:41,413 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.05 -metadata sharpen=1.05 -metadata temp=1.05 -metadata title=Meta Variant #1 -metadata comment=Brightness=1.05, Sharpen=1.05, Temp=1.05 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_1.jpg
+2024-12-27 09:44:41,732 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_1.jpg
+2024-12-27 09:44:41,734 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.1 -metadata sharpen=1.1 -metadata temp=1.1 -metadata title=Meta Variant #2 -metadata comment=Brightness=1.1, Sharpen=1.1, Temp=1.1 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_2.jpg
+2024-12-27 09:44:41,787 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_2.jpg
+2024-12-27 09:44:41,787 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.15 -metadata sharpen=1.15 -metadata temp=1.15 -metadata title=Meta Variant #3 -metadata comment=Brightness=1.15, Sharpen=1.15, Temp=1.15 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_3.jpg
+2024-12-27 09:44:41,841 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_3.jpg
+2024-12-27 09:44:41,841 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.2 -metadata sharpen=1.2 -metadata temp=1.2 -metadata title=Meta Variant #4 -metadata comment=Brightness=1.2, Sharpen=1.2, Temp=1.2 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_4.jpg
+2024-12-27 09:44:41,894 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_4.jpg
+2024-12-27 09:44:41,894 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.25 -metadata sharpen=1.25 -metadata temp=1.25 -metadata title=Meta Variant #5 -metadata comment=Brightness=1.25, Sharpen=1.25, Temp=1.25 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_5.jpg
+2024-12-27 09:44:41,947 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_5.jpg
+2024-12-27 09:44:41,947 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.3 -metadata sharpen=1.3 -metadata temp=1.3 -metadata title=Meta Variant #6 -metadata comment=Brightness=1.3, Sharpen=1.3, Temp=1.3 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_6.jpg
+2024-12-27 09:44:42,001 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_6.jpg
+2024-12-27 09:44:42,001 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.35 -metadata sharpen=1.35 -metadata temp=1.35 -metadata title=Meta Variant #7 -metadata comment=Brightness=1.35, Sharpen=1.35, Temp=1.35 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_7.jpg
+2024-12-27 09:44:42,054 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_7.jpg
+2024-12-27 09:44:42,054 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.4 -metadata sharpen=1.4 -metadata temp=1.4 -metadata title=Meta Variant #8 -metadata comment=Brightness=1.4, Sharpen=1.4, Temp=1.4 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_8.jpg
+2024-12-27 09:44:42,107 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_8.jpg
+2024-12-27 09:44:42,107 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.45 -metadata sharpen=1.45 -metadata temp=1.45 -metadata title=Meta Variant #9 -metadata comment=Brightness=1.45, Sharpen=1.45, Temp=1.45 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_9.jpg
+2024-12-27 09:44:42,160 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_9.jpg
+2024-12-27 09:44:42,161 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/input_photo.jpg -c copy -metadata brightness=1.5 -metadata sharpen=1.5 -metadata temp=1.5 -metadata title=Meta Variant #10 -metadata comment=Brightness=1.5, Sharpen=1.5, Temp=1.5 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_10.jpg
+2024-12-27 09:44:42,219 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpnqxb0z_p/output_10.jpg
+2024-12-27 09:44:42,691 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:44,652 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:44,785 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:45,667 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:45,811 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:46,110 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:46,288 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:46,612 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:46,814 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:47,095 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:47,402 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:47,698 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:47,968 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:48,222 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:48,423 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:48,652 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:48,868 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:49,116 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:49,385 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:44:49,681 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:44:49,865 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:44:49,929 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:44:59,982 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:45:10,035 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:45:20,111 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:45:30,182 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:45:40,233 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:45:50,284 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:46:00,337 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:46:10,387 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:46:20,435 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:46:30,495 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:46:40,551 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:46:50,605 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:00,657 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:02,991 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:03,422 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:47:13,121 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:23,175 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:33,228 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:43,415 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:53,472 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:59,565 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:47:59,785 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:48:08,805 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:48:09,568 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:48:09,661 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/videos/file_18.mp4 "HTTP/1.1 200 OK"
+2024-12-27 09:48:11,184 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/liza_1.mp4
+2024-12-27 09:48:11,268 - __main__ - INFO - Original Metadata:
+2024-12-27 09:48:11,268 - __main__ - INFO - {}
+2024-12-27 09:48:11,346 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:48:11,348 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/liza_1.mp4 -c copy -metadata brightness=1.05 -metadata sharpen=1.05 -metadata temp=1.05 -metadata title=Meta Variant #1 -metadata comment=Brightness=1.05, Sharpen=1.05, Temp=1.05 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/output_1.mp4
+2024-12-27 09:48:11,515 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/output_1.mp4
+2024-12-27 09:48:11,515 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/liza_1.mp4 -c copy -metadata brightness=1.1 -metadata sharpen=1.1 -metadata temp=1.1 -metadata title=Meta Variant #2 -metadata comment=Brightness=1.1, Sharpen=1.1, Temp=1.1 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/output_2.mp4
+2024-12-27 09:48:11,576 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp_u1x9t3p/output_2.mp4
+2024-12-27 09:48:11,670 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:48:13,307 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendVideo "HTTP/1.1 200 OK"
+2024-12-27 09:48:13,668 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:48:16,222 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendVideo "HTTP/1.1 200 OK"
+2024-12-27 09:48:16,416 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:48:18,904 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:48:28,959 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:48:39,012 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:48:49,147 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:48:59,249 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:49:09,306 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:49:19,457 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:49:29,520 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:49:39,630 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:49:49,840 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:49:59,891 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:50:09,947 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:50:19,998 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:50:30,056 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:50:40,113 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:50:50,167 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:51:00,323 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:51:10,386 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:51:20,441 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:51:30,493 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:51:40,544 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:51:50,595 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:52:00,648 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:52:10,700 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:52:20,753 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:52:20,824 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2024-12-27 09:52:20,824 - telegram.ext.Application - INFO - Application.stop() complete
+2024-12-27 09:52:21,781 - __main__ - INFO - Bot is starting. Press Ctrl+C to stop.
+2024-12-27 09:52:21,991 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getMe "HTTP/1.1 200 OK"
+2024-12-27 09:52:22,082 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/deleteWebhook "HTTP/1.1 200 OK"
+2024-12-27 09:52:22,085 - telegram.ext.Application - INFO - Application started
+2024-12-27 09:52:32,305 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:52:42,417 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:52:52,477 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:00,727 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:00,954 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:53:08,745 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:08,948 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:53:09,017 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/photos/file_13.jpg "HTTP/1.1 200 OK"
+2024-12-27 09:53:09,065 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/input_photo.jpg
+2024-12-27 09:53:09,067 - __main__ - INFO - Original Metadata:
+2024-12-27 09:53:09,067 - __main__ - INFO - {}
+2024-12-27 09:53:09,145 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:53:09,148 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/input_photo.jpg -c copy -metadata brightness=1.03 -metadata sharpen=1.03 -metadata temp=1.03 -metadata contrast=1.03 -metadata gamma=1.03 -metadata title=Meta Variant #1 -metadata comment=Brightness=1.03, Sharpen=1.03, Temp=1.03, Contrast=1.03, Gamma=1.03 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/output_1.jpg
+2024-12-27 09:53:09,315 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/output_1.jpg
+2024-12-27 09:53:09,316 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/input_photo.jpg -c copy -metadata brightness=1.06 -metadata sharpen=1.06 -metadata temp=1.06 -metadata contrast=1.06 -metadata gamma=1.06 -metadata title=Meta Variant #2 -metadata comment=Brightness=1.06, Sharpen=1.06, Temp=1.06, Contrast=1.06, Gamma=1.06 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/output_2.jpg
+2024-12-27 09:53:09,369 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmp1oljou87/output_2.jpg
+2024-12-27 09:53:09,775 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:53:10,228 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:53:10,326 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:53:10,425 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:53:10,497 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:53:18,806 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:28,865 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:38,931 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:40,590 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:40,811 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:53:41,652 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:53:42,081 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:53:42,182 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/videos/file_19.mp4 "HTTP/1.1 200 OK"
+2024-12-27 09:53:43,330 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfqkdot3j/liza_1.mp4
+2024-12-27 09:53:43,467 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:53:51,812 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:01,967 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:05,023 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:05,300 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:54:07,866 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:07,988 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:54:08,092 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/videos/file_20.mp4 "HTTP/1.1 200 OK"
+2024-12-27 09:54:08,200 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/smoke-dog.mp4
+2024-12-27 09:54:08,240 - __main__ - INFO - Original Metadata:
+2024-12-27 09:54:08,240 - __main__ - INFO - {}
+2024-12-27 09:54:08,317 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:54:08,320 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/smoke-dog.mp4 -c copy -metadata brightness=1.03 -metadata sharpen=1.03 -metadata temp=1.03 -metadata contrast=1.03 -metadata gamma=1.03 -metadata title=Meta Variant #1 -metadata comment=Brightness=1.03, Sharpen=1.03, Temp=1.03, Contrast=1.03, Gamma=1.03 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/output_1.mp4
+2024-12-27 09:54:08,472 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/output_1.mp4
+2024-12-27 09:54:08,473 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/smoke-dog.mp4 -c copy -metadata brightness=1.06 -metadata sharpen=1.06 -metadata temp=1.06 -metadata contrast=1.06 -metadata gamma=1.06 -metadata title=Meta Variant #2 -metadata comment=Brightness=1.06, Sharpen=1.06, Temp=1.06, Contrast=1.06, Gamma=1.06 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/output_2.mp4
+2024-12-27 09:54:08,527 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpqg2dz6to/output_2.mp4
+2024-12-27 09:54:08,701 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:54:09,493 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendVideo "HTTP/1.1 200 OK"
+2024-12-27 09:54:09,937 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:54:10,360 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendVideo "HTTP/1.1 200 OK"
+2024-12-27 09:54:10,482 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:54:17,930 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:28,006 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:38,144 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:48,210 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:54:58,265 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:55:08,352 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:55:18,409 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:55:28,466 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:55:38,568 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:55:47,189 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2024-12-27 09:55:47,189 - telegram.ext.Application - INFO - Application.stop() complete
+2024-12-27 09:55:48,474 - __main__ - INFO - Bot is starting. Press Ctrl+C to stop.
+2024-12-27 09:55:48,696 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getMe "HTTP/1.1 200 OK"
+2024-12-27 09:55:48,748 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/deleteWebhook "HTTP/1.1 200 OK"
+2024-12-27 09:55:48,750 - telegram.ext.Application - INFO - Application started
+2024-12-27 09:55:58,635 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:55:58,890 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:05,647 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:05,899 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:56:05,953 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/videos/file_21.mp4 "HTTP/1.1 200 OK"
+2024-12-27 09:56:06,067 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfvs5zd79/smoke-dog.mp4
+2024-12-27 09:56:06,152 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:15,705 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:21,095 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:21,364 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:22,495 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:22,562 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:56:22,659 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/photos/file_22.jpg "HTTP/1.1 200 OK"
+2024-12-27 09:56:22,709 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/input_photo.jpg
+2024-12-27 09:56:22,710 - __main__ - INFO - Original Metadata:
+2024-12-27 09:56:22,711 - __main__ - INFO - {}
+2024-12-27 09:56:22,784 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:22,787 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/input_photo.jpg -c copy -metadata brightness=1.03 -metadata sharpen=1.03 -metadata temp=1.03 -metadata contrast=1.03 -metadata gamma=1.03 -metadata title=Meta Variant #1 -metadata comment=Brightness=1.03, Sharpen=1.03, Temp=1.03, Contrast=1.03, Gamma=1.03 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/output_1.jpg
+2024-12-27 09:56:22,938 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/output_1.jpg
+2024-12-27 09:56:22,938 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/input_photo.jpg -c copy -metadata brightness=1.06 -metadata sharpen=1.06 -metadata temp=1.06 -metadata contrast=1.06 -metadata gamma=1.06 -metadata title=Meta Variant #2 -metadata comment=Brightness=1.06, Sharpen=1.06, Temp=1.06, Contrast=1.06, Gamma=1.06 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/output_2.jpg
+2024-12-27 09:56:22,993 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmpfwi385_p/output_2.jpg
+2024-12-27 09:56:23,081 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:56:23,295 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:56:23,386 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:56:23,531 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendPhoto "HTTP/1.1 200 OK"
+2024-12-27 09:56:23,606 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:32,629 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:42,689 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:52,751 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:54,970 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:55,337 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:57,689 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:56:57,970 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getFile "HTTP/1.1 200 OK"
+2024-12-27 09:56:58,076 - httpx - INFO - HTTP Request: GET https://api.telegram.org/file/bot7788269650%3AAAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/videos/file_23.mp4 "HTTP/1.1 200 OK"
+2024-12-27 09:56:58,278 - __main__ - INFO - Файл скачан в /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/serge-gainsbourg.mp4
+2024-12-27 09:56:58,303 - __main__ - INFO - Original Metadata:
+2024-12-27 09:56:58,303 - __main__ - INFO - {}
+2024-12-27 09:56:58,379 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:56:58,381 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/serge-gainsbourg.mp4 -c copy -metadata brightness=1.03 -metadata sharpen=1.03 -metadata temp=1.03 -metadata contrast=1.03 -metadata gamma=1.03 -metadata title=Meta Variant #1 -metadata comment=Brightness=1.03, Sharpen=1.03, Temp=1.03, Contrast=1.03, Gamma=1.03 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/output_1.mp4
+2024-12-27 09:56:58,494 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/output_1.mp4
+2024-12-27 09:56:58,494 - __main__ - INFO - Running ffmpeg command: ffmpeg -y -i /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/serge-gainsbourg.mp4 -c copy -metadata brightness=1.06 -metadata sharpen=1.06 -metadata temp=1.06 -metadata contrast=1.06 -metadata gamma=1.06 -metadata title=Meta Variant #2 -metadata comment=Brightness=1.06, Sharpen=1.06, Temp=1.06, Contrast=1.06, Gamma=1.06 /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/output_2.mp4
+2024-12-27 09:56:58,554 - __main__ - INFO - Metadata update successful: /var/folders/36/5r0pfyy13t59lwf48l7pjqm80000gn/T/tmphq46kl2l/output_2.mp4
+2024-12-27 09:56:58,653 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:56:59,113 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendVideo "HTTP/1.1 200 OK"
+2024-12-27 09:56:59,225 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendDocument "HTTP/1.1 200 OK"
+2024-12-27 09:56:59,652 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendVideo "HTTP/1.1 200 OK"
+2024-12-27 09:56:59,750 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 09:57:07,754 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:57:17,890 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:57:28,028 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:57:38,168 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:57:48,232 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:57:58,291 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:58:08,375 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:58:18,436 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:58:28,494 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:58:38,574 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:58:48,640 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:58:58,744 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:59:08,882 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:59:18,942 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:59:29,040 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:59:39,117 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:59:49,176 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 09:59:59,236 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:00:09,312 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:00:19,373 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:00:29,434 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:00:39,493 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:00:49,579 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:00:59,636 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:01:09,695 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:01:19,763 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:01:29,820 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:01:39,876 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:01:49,955 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:02:00,011 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:02:10,145 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:02:20,216 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:02:30,328 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:02:40,389 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:02:50,594 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:03:00,655 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:03:10,711 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:03:20,803 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:03:30,955 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:03:41,014 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:03:51,084 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:04:01,147 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:04:11,270 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:04:21,338 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:04:31,397 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:04:41,496 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:04:51,564 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:05:01,769 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:05:11,865 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:05:21,944 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:05:32,002 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:05:35,786 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2024-12-27 10:05:35,786 - telegram.ext.Application - INFO - Application.stop() complete
+2024-12-27 10:24:45,412 - __main__ - INFO - Bot is starting. Press Ctrl+C to stop.
+2024-12-27 10:24:45,650 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getMe "HTTP/1.1 200 OK"
+2024-12-27 10:24:45,712 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/deleteWebhook "HTTP/1.1 200 OK"
+2024-12-27 10:24:45,715 - telegram.ext.Application - INFO - Application started
+2024-12-27 10:24:45,925 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/getUpdates "HTTP/1.1 200 OK"
+2024-12-27 10:24:46,014 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 10:24:46,134 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAHBQ-kl92EjElg6UoRjYK5dcmXVqO2C_aw/sendMessage "HTTP/1.1 200 OK"
+2024-12-27 10:24:54,823 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2024-12-27 10:24:54,824 - telegram.ext.Application - INFO - Application.stop() complete
+2024-12-27 18:40:00,773 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAGuoBLhWwJBfluIzVl-nzDgGxambYyTJC8/getMe "HTTP/1.1 200 OK"
+2024-12-27 18:40:00,775 - telegram.ext.Application - INFO - Application started
+2024-12-27 18:54:16,528 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2024-12-27 18:54:16,530 - telegram.ext.Application - INFO - Application.stop() complete
+2024-12-27 22:40:53,580 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAGuoBLhWwJBfluIzVl-nzDgGxambYyTJC8/getMe "HTTP/1.1 200 OK"
+2024-12-27 22:40:53,582 - telegram.ext.Application - INFO - Application started
+2024-12-27 22:42:39,644 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2024-12-27 22:42:39,646 - telegram.ext.Application - INFO - Application.stop() complete
+2024-12-27 22:42:43,088 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7788269650:AAH4xN2FsPEzSNNO8fY89tdgMTAzke0MlKg/getMe "HTTP/1.1 200 OK"
+2024-12-27 22:42:43,089 - telegram.ext.Application - INFO - Application started
