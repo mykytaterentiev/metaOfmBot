@@ -2,7 +2,7 @@ import os
 import subprocess
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("metaOfmBot")
 
 def set_metadata_ffmpeg(input_path, output_path, metadata_dict):
     brightness_eq = metadata_dict['brightness'] - 1.0

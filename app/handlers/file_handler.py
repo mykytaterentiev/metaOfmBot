@@ -5,9 +5,7 @@ from telegram import Update, PhotoSize
 from telegram.ext import ContextTypes
 
 from app.config import PROCESSED_FILE_IDS_PATH
-from app.utils.metadata import get_file_hash
-
-logger = logging.getLogger(__name__)
+from app.utils.logging_config import logger
 
 PROCESSED_FILE_IDS = set()
 
@@ -30,27 +28,34 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     file_name = ""
     file_type = ""
     
+    logger.info(f"Handling file from user {user_id}")
+    
     if message.video:
         file_id = message.video.file_id
         file_name = message.video.file_name or "input_video.mp4"
         file_type = "video"
+        logger.info(f"Received video file: {file_id}, name: {file_name}")
     elif message.photo:
         photo: PhotoSize = message.photo[-1]
         file_id = photo.file_id
         file_name = "input_photo.jpg"
         file_type = "photo"
+        logger.info(f"Received photo file: {file_id}, name: {file_name}")
     elif message.document:
         mime_type = message.document.mime_type
         if mime_type.startswith("video"):
             file_id = message.document.file_id
             file_name = message.document.file_name or "input_video.mp4"
             file_type = "video"
+            logger.info(f"Received document video file: {file_id}, name: {file_name}")
         elif mime_type.startswith("image"):
             file_id = message.document.file_id
             file_name = message.document.file_name or "input_photo.jpg"
             file_type = "photo"
+            logger.info(f"Received document image file: {file_id}, name: {file_name}")
     else:
         await message.reply_text("Пожалуйста, отправь действительный файл видео или фото.")
+        logger.warning(f"Unsupported file type from user {user_id}")
         return
     
     if file_id:
@@ -59,6 +64,7 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "file_name": file_name,
             "file_type": file_type
         }
+        logger.info(f"Stored file_id for user {user_id}: {USER_STATE[user_id]}")
         await message.reply_text(
             "Файл получен! Теперь используй /process <n>, чтобы указать количество уникальных вариантов."
         )

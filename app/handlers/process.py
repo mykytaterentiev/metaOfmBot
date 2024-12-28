@@ -3,6 +3,7 @@ import tempfile
 import json
 import io
 import random
+import subprocess  # Ensure subprocess is imported
 from telegram import Update, PhotoSize
 from telegram.ext import ContextTypes
 
@@ -38,27 +39,35 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user_id = update.effective_user.id
     
+    logger.info(f"Processing command /process from user {user_id}")
+    
     if user_id not in USER_STATE or "file_id" not in USER_STATE[user_id]:
         await message.reply_text("Нет сохраненного файла. Пожалуйста, сначала отправь видео или фото.")
+        logger.warning(f"No file_id found in USER_STATE for user {user_id}")
         return
     
     args = context.args
     if len(args) != 1:
         await message.reply_text("Использование: /process <n> (например, /process 3)")
+        logger.warning(f"Incorrect number of arguments for /process command from user {user_id}")
         return
     
     try:
         n = int(args[0])
         if not (1 <= n <= 10):
             await message.reply_text("Пожалуйста, запроси от 1 до 10 вариантов.")
+            logger.warning(f"Invalid number of variants requested by user {user_id}: {n}")
             return
     except ValueError:
         await message.reply_text("Пожалуйста, укажи действительное целое число (1-10).")
+        logger.warning(f"Non-integer argument for /process command from user {user_id}: {args[0]}")
         return
     
     file_id = USER_STATE[user_id]["file_id"]
     file_name = USER_STATE[user_id]["file_name"]
     file_type = USER_STATE[user_id]["file_type"]
+    
+    logger.info(f"User {user_id} has file_id: {file_id}, file_type: {file_type}, file_name: {file_name}")
     
     with tempfile.TemporaryDirectory() as tmp_dir:
         input_path = os.path.join(tmp_dir, file_name)
@@ -67,20 +76,20 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await file_obj.download_to_drive(input_path)
             logger.info(f"Файл скачан в {input_path}")
         except Exception as e:
-            logger.error(f"Не удалось скачать файл: {e}")
+            logger.error(f"Не удалось скачать файл для user {user_id}: {e}")
             await message.reply_text("Не удалось скачать файл. Пожалуйста, попробуй снова.")
             return
         
         file_hash = get_file_hash(input_path)
         if file_hash in PROCESSED_FILE_IDS:
             await message.reply_text("Этот файл уже был обработан ранее. Пожалуйста, отправь другой файл.")
+            logger.warning(f"File {file_hash} already processed for user {user_id}")
             return
         PROCESSED_FILE_IDS.add(file_hash)
         save_processed_file_ids()
         
         original_meta = get_metadata(input_path, file_type)
-        logger.info("Original Metadata:")
-        logger.info(original_meta)
+        logger.info(f"Original Metadata for user {user_id}: {original_meta}")
         
         await message.reply_text("Начинаю обработку. Пожалуйста, подожди...")
         
@@ -98,10 +107,11 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 attempt += 1
             else:
                 await message.reply_text("Не удалось сгенерировать уникальные параметры для варианта.")
+                logger.error(f"Failed to generate unique parameters for variant {i} for user {user_id}")
                 return
             
             logger.info(
-                f"Variant #{i} generated parameters:\n"
+                f"Variant #{i} generated parameters for user {user_id}:\n"
                 f"Brightness: {params['brightness']}, Sharpen: {params['sharpen']}, "
                 f"Temperature: {params['temp']}, Contrast: {params['contrast']}, Gamma: {params['gamma']}"
             )
@@ -112,9 +122,17 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 
                 set_metadata_ffmpeg(input_path, output_path, params)
                 
+                if os.path.isfile(output_path):
+                    logger.info(f"Processed file saved at {output_path} for variant #{i}")
+                else:
+                    logger.error(f"Processed file not found at {output_path} for variant #{i}")
+                    await message.reply_text(f"Ошибка: Обработанный файл для варианта #{i} не найден.")
+                    continue
+                
                 output_paths.append((output_path, params))
             except subprocess.CalledProcessError as e:
                 await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
+                logger.error(f"FFmpeg processing failed for variant #{i} for user {user_id}: {e}")
                 return
         
         for i, (path, meta) in enumerate(output_paths, 1):
@@ -143,4 +161,5 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await message.reply_photo(photo=file)
         
         del USER_STATE[user_id]
+        logger.info(f"Processing completed for user {user_id}")
         await message.reply_text("Всё готово! Отправь другой файл или используй /help для дополнительных команд.")
