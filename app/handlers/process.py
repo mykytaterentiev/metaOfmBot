@@ -90,8 +90,13 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         PROCESSED_FILE_IDS.add(file_hash)
         save_processed_file_ids()
         
-        original_meta = get_metadata(input_path, file_type)
-        logger.info(f"Original Metadata for user {user_id}: {original_meta}")
+        try:
+            original_meta = get_metadata(input_path, file_type)
+            logger.info(f"Original Metadata for user {user_id}: {original_meta}")
+        except Exception as e:
+            logger.error(f"Failed to extract metadata for user {user_id}: {e}")
+            await message.reply_text("Не удалось извлечь метаданные из файла. Пожалуйста, отправь другой файл.")
+            return
         
         await message.reply_text("Начинаю обработку. Пожалуйста, подожди...")
         
@@ -136,14 +141,23 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await message.reply_text(f"Ошибка при генерации варианта #{i}: {e}")
                 logger.error(f"FFmpeg processing failed for variant #{i} for user {user_id}: {e}")
                 return
+            except Exception as e:
+                await message.reply_text(f"Произошла непредвиденная ошибка при генерации варианта #{i}.")
+                logger.error(f"Unexpected error for variant #{i} for user {user_id}: {e}")
+                return
         
         for i, (path, meta) in enumerate(output_paths, 1):
             if not os.path.isfile(path):
                 logger.error(f"Обработанный файл не найден: {path}")
                 await message.reply_text(f"Ошибка: Обработанный файл для варианта #{i} не найден.")
                 continue
-            updated_meta = get_metadata(path, file_type)
-            diff_text = compare_metadata(original_meta, updated_meta, PARAMETERS)
+            try:
+                updated_meta = get_metadata(path, file_type)
+                diff_text = compare_metadata(original_meta, updated_meta, PARAMETERS)
+            except Exception as e:
+                logger.error(f"Failed to extract metadata for processed file {path}: {e}")
+                await message.reply_text(f"Ошибка: Не удалось извлечь метаданные для варианта #{i}.")
+                continue
             
             summary = (
                 f"Вот вариант #{i} с настройками яркости, резкости, температуры, контраста и гаммы.\n\n"
@@ -151,16 +165,21 @@ async def process_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"{diff_text}"
             )
             log_file = io.StringIO(summary)
-            await message.reply_document(
-                document=log_file,
-                filename=f"variant_{i}_logs.txt",
-                caption=f"Логи для варианта #{i}"
-            )
-            with open(path, "rb") as file:
-                if file_type == "video":
-                    await message.reply_video(video=file)
-                elif file_type == "photo":
-                    await message.reply_photo(photo=file)
+            try:
+                await message.reply_document(
+                    document=log_file,
+                    filename=f"variant_{i}_logs.txt",
+                    caption=f"Логи для варианта #{i}"
+                )
+                with open(path, "rb") as file:
+                    if file_type == "video":
+                        await message.reply_video(video=file)
+                    elif file_type == "photo":
+                        await message.reply_photo(photo=file)
+            except Exception as e:
+                logger.error(f"Failed to send processed files to user {user_id}: {e}")
+                await message.reply_text(f"Ошибка: Не удалось отправить обработанный файл для варианта #{i}.")
+                continue
         
         del USER_STATE[user_id]
         logger.info(f"Processing completed for user {user_id}")
